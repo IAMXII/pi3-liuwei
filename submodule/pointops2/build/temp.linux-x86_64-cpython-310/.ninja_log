@@ -1,0 +1,22 @@
+# ninja log v7
+2	11096	1761836101499640980	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/knnquery/knnquery_cuda.o	b34c893648364c3b
+2	11397	1761836101500541976	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/sampling/sampling_cuda.o	495659170c1f18e9
+3	11919	1761836101500827396	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/subtraction/subtraction_cuda.o	f80f41a7ed74f694
+1	13281	1761836101499320467	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/interpolation/interpolation_cuda.o	3da52fae3fa7a632
+0	14106	1761836101498378926	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/attention/attention_cuda.o	5e136f098ad5e7bf
+0	16206	1761836101496709730	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/aggregation/aggregation_cuda.o	a7822774a8dabc62
+2	16308	1761836101500047133	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/rpe/relative_pos_encoding_cuda.o	fac79dacd62a5131
+1	16966	1761836101499004311	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/grouping/grouping_cuda.o	fcea7ebde4ceadd0
+2	17051	1761836101500417839	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/rpe_v2/relative_pos_encoding_cuda_v2.o	e03768db20b8fb9a
+1	17949	1761836101498868896	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/attention_v2/attention_cuda_v2.o	99025d567826da34
+3	23956	1761836101500680517	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/sampling/sampling_cuda_kernel.o	3e37372acdec3ae2
+2	24417	1761836101500126037	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/rpe/relative_pos_encoding_cuda_kernel.o	4f325c52df294460
+0	24614	1761836101498201345	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/aggregation/aggregation_cuda_kernel.o	ca2922891eb2d300
+3	24673	1761836101501059617	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/subtraction/subtraction_cuda_kernel.o	a032be8ad6eee5be
+0	25087	1761836101498527980	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/attention/attention_cuda_kernel.o	1d4a2ae7de50f427
+1	25686	1761836101498690973	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/attention_v2/attention_cuda_kernel_v2.o	3cb4fcc2fd78948e
+2	25889	1761836101499911277	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/pointops_api.o	10a7003c69de3c65
+2	26536	1761836101500304504	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/rpe_v2/relative_pos_encoding_cuda_kernel_v2.o	53919b9cb9256d51
+1	26562	1761836101499172805	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/grouping/grouping_cuda_kernel.o	6a933adc10df8d4
+2	29110	1761836101499773445	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/knnquery/knnquery_cuda_kernel.o	5386289df328cc30
+1	30338	1761836101499462667	/home/liuwei/mnt/vggt/Instant4D/submodule/pointops2/build/temp.linux-x86_64-cpython-310/src/interpolation/interpolation_cuda_kernel.o	3dcaa7ba24e95021
