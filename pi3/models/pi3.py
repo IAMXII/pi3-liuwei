@@ -89,12 +89,12 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         self.patch_start_idx = num_register_tokens
         self.register_token = nn.Parameter(torch.randn(1, 1, num_register_tokens, self.dec_embed_dim))
         nn.init.normal_(self.register_token, std=1e-6)
-
-        # ----------------------
-        #  Local Points Decoder
-        # ----------------------
+        #
+        # # ----------------------
+        # #  Local Points Decoder
+        # # ----------------------
         self.point_decoder = TransformerDecoder(
-            in_dim=2*self.dec_embed_dim, 
+            in_dim=2*self.dec_embed_dim,
             dec_embed_dim=1024,
             dec_num_heads=16,
             out_dim=1024,
@@ -103,10 +103,34 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         self.point_head = LinearPts3d(patch_size=14, dec_embed_dim=1024, output_dim=3)
 
         # ----------------------
+        #   Gaussian Decoder
+        # ----------------------
+
+        self.gaussian_decoder = TransformerDecoder(
+            in_dim=2 * self.dec_embed_dim,
+            dec_embed_dim=1024,
+            dec_num_heads=16,
+            out_dim=1024,
+            rope=self.rope,
+        )
+        gaussian_raw_channels = 4 + 3 + 1 + 3 + 1 + 3
+        splits_and_inits = [
+            (4, 1.0, 0.0),  # quats
+            (3, 0.00003, -7.0),  # scales
+            (1, 1.0, -2.0),  # opacities
+            (3 * self.nums_sh, 1.0, 0.0),  # residual_sh
+            (1, 1.0, -2.0),  # weights
+        ]
+        # self.gaussian_head =            LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=gaussian_raw_channels)
+        self.gaussian_head =  GaussianExpander(dim_token=1024)
+
+        # ----------------------
         #     Conf Decoder
         # ----------------------
         self.conf_decoder = deepcopy(self.point_decoder)
-        self.conf_head = LinearPts3d(patch_size=14, dec_embed_dim=1024, output_dim=1)
+        self.conf_head = LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=1)
+
+
 
         # ----------------------
         #  Camera Pose Decoder
@@ -185,17 +209,22 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
 
         hidden, pos = self.decode(hidden, N, H, W)
 
-        point_hidden = self.point_decoder(hidden, xpos=pos)
+        gaussian_hidden = self.gaussian_decoder(hidden, xpos=pos)
         conf_hidden = self.conf_decoder(hidden, xpos=pos)
         camera_hidden = self.camera_decoder(hidden, xpos=pos)
 
         with torch.amp.autocast(device_type='cuda', enabled=False):
-            # local points
-            point_hidden = point_hidden.float()
-            ret = self.point_head([point_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
-            xy, z = ret.split([2, 1], dim=-1)
-            z = torch.exp(z)
-            local_points = torch.cat([xy * z, z], dim=-1)
+            # local gaussians
+            gaussian_hidden = gaussian_hidden.float()
+            gaussians = self.gaussian_head([gaussian_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
+            # centers = ret['center']
+            # scales = ret['scale']
+            # quats = ret['quat']
+            # colors = ret['color']
+            # opacs = ret['opac']
+            # xy, z = ret.split([2, 1], dim=-1)
+            # z = torch.exp(z)
+            # local_points = torch.cat([xy * z, z], dim=-1)
 
             # confidence
             conf_hidden = conf_hidden.float()
@@ -206,11 +235,11 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
             camera_poses = self.camera_head(camera_hidden[:, self.patch_start_idx:], patch_h, patch_w).reshape(B, N, 4, 4)
 
             # unproject local points using camera poses
-            points = torch.einsum('bnij, bnhwj -> bnhwi', camera_poses, homogenize_points(local_points))[..., :3]
+            # points = torch.einsum('bnij, bnhwj -> bnhwi', camera_poses, homogenize_points(local_points))[..., :3]
 
         return dict(
-            points=points,
-            local_points=local_points,
+            # points=points,
+            gaussians=gaussians,
             conf=conf,
             camera_poses=camera_poses,
         )

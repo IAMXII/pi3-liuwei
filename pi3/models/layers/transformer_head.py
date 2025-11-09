@@ -5,6 +5,7 @@ import torch.nn as nn
 from functools import partial
 from torch.utils.checkpoint import checkpoint
 import torch.nn.functional as F
+import torch
    
 class TransformerDecoder(nn.Module):
     def __init__(
@@ -73,9 +74,32 @@ class LinearPts3d (nn.Module):
         B, S, D = tokens.shape
 
         # extract 3D points
-        feat = self.proj(tokens)  # B,S,D
-        feat = feat.transpose(-1, -2).view(B, -1, H//self.patch_size, W//self.patch_size)
-        feat = F.pixel_shuffle(feat, self.patch_size)  # B,3,H,W
+        feat = self.proj(tokens)  # B,S,D   output:B,S(s*h*w),outdim*14*14
+        feat = feat.transpose(-1, -2).view(B, -1, H//self.patch_size, W//self.patch_size)      # output:B,outdim*14*14*s,h,w
+        feat = F.pixel_shuffle(feat, self.patch_size)  # B,3*s,H,W
 
         # permute + norm depth
         return feat.permute(0, 2, 3, 1)
+
+class GaussianExpander(nn.Module):
+    def __init__(self, dim_token, K=16):
+        super().__init__()
+        self.K = K
+        self.fc_center = nn.Linear(dim_token, 3*K)
+        self.fc_scale  = nn.Linear(dim_token, 3*K)
+        self.fc_quat   = nn.Linear(dim_token, 4*K)
+        self.fc_color  = nn.Linear(dim_token, 3*K)
+        self.fc_opac   = nn.Linear(dim_token, 1*K)
+
+    def forward(self, tokens):
+        B, N, D = tokens.shape
+        K = self.K
+
+        center = torch.exp(self.fc_center(tokens).reshape(B, N*K, 3))
+        scale  = torch.exp(self.fc_scale(tokens).reshape(B, N*K, 3))
+        quat   = self.fc_quat(tokens).reshape(B, N*K, 4)
+        quat   = quat / (torch.norm(quat, dim=-1, keepdim=True) + 1e-8)
+        color  = torch.sigmoid(self.fc_color(tokens).reshape(B, N*K, 3))
+        opac   = torch.sigmoid(self.fc_opac(tokens).reshape(B, N*K, 1))
+
+        return dict(center=center, scale=scale, quat=quat, color=color, opacity=opac)

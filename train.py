@@ -4,7 +4,7 @@ import math
 import random
 import argparse
 from typing import Tuple
-
+from gsplat import rasterization
 import torch
 import torch.nn.functional as F
 import torch.distributed as dist
@@ -12,6 +12,8 @@ import torch.multiprocessing as mp
 from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.optim.lr_scheduler import OneCycleLR
+from lpips import LPIPS
+
 
 # ---------- 超参（可改为 argparse） ----------
 STAGE_EPOCHS = 80
@@ -28,9 +30,12 @@ SAMPLES_PER_GPU_STAGE2 = 48
 
 # Loss weights
 LAMBDA_NORMAL = 1.0
+LAMBDA_LPIPS = 0.05
 LAMBDA_CONF = 0.05
 LAMBDA_CAM = 0.1
 LAMBDA_TRANS = 100.0
+LAMBDA_DEPTH = 1.0
+LAMBDA_RGB = 1
 
 ENCODER_LR = 5e-6
 REST_LR = 5e-5
@@ -99,39 +104,46 @@ def choose_batch_size_for_resolution(h: int, w: int,
 # ---------- 损失函数 ----------
 def compute_losses(res, gt, device):
     losses = {}
-    if 'points' in res and 'points' in gt:
-        losses['points_loss'] = F.l1_loss(res['points'], gt['points'])
-    else:
-        losses['points_loss'] = torch.tensor(0.0, device=device)
+    lpips_loss_fn = LPIPS(net='vgg').to(device)
+    if 'gaussians' in res:
+        height = gt['image'].shape[-2]
+        width = gt['image'].shape[-1]
+        B, C, _= res['camera_poses'].shape
+        N = res['gaussians']['center'].shape[1]
+        viewmats = res['camera_poses']
+        Ks = torch.tensor([[[1., 0., 0.],
+                            [0., 1., 0.],
+                            [0., 0., 1.]]],
+                          device=device).repeat(B, C, 1, 1)
+        means = res['gaussians']['center']
+        quats = res['gaussians']['quat']
+        scales = res['gaussians']['scale']
+        colors = res['gaussians']['color']
+        opacities = res['gaussians']['opac']
+        render_mode = "RGB+ED"
 
-    if 'local_points' in res and 'local_points' in gt:
-        pred_lp = res['local_points']
-        gt_lp = gt['local_points']
-        if pred_lp.shape != gt_lp.shape:
-            n = min(pred_lp.shape[1], gt_lp.shape[1], 4096)
-            pred_lp_s = pred_lp[:, :n, ...]
-            gt_lp_s = gt_lp[:, :n, ...]
-        else:
-            pred_lp_s = pred_lp
-            gt_lp_s = gt_lp
-        losses['local_points_loss'] = F.smooth_l1_loss(pred_lp_s, gt_lp_s)
-    else:
-        losses['local_points_loss'] = torch.tensor(0.0, device=device)
+        render_colors, render_alphas, meta = rasterization(
+            means=means,
+            quats=quats,
+            scales=scales,
+            opacities=opacities,
+            colors=colors,
+            viewmats=viewmats,
+            Ks=Ks,
+            width=width,
+            height=height,
+            render_mode=render_mode
+        )
 
-    if 'local_points' in res and 'local_points' in gt and res['local_points'].shape == gt['local_points'].shape:
-        pred_vectors = F.normalize(res['local_points'] + 1e-6, dim=-1)
-        gt_vectors = F.normalize(gt['local_points'] + 1e-6, dim=-1)
-        cos = (pred_vectors * gt_vectors).sum(dim=-1)
-        normal_loss = (1.0 - cos).mean()
-        losses['normal_loss'] = normal_loss * LAMBDA_NORMAL
-    else:
-        losses['normal_loss'] = torch.tensor(0.0, device=device)
+        render_colors = render_colors[..., :3]
+        render_depths = render_colors[..., 3:]
+        losses['rgb_loss'] = F.l1_loss(render_colors, gt['image'])
+        render_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
+        gt_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
 
-    if 'conf' in res and 'conf' in gt:
-        pred_conf = torch.sigmoid(res['conf'])
-        losses['conf_loss'] = F.binary_cross_entropy(pred_conf, gt['conf']) * LAMBDA_CONF
-    else:
-        losses['conf_loss'] = torch.tensor(0.0, device=device)
+        # 2. 计算 LPIPS（返回的是每个样本的平均值）
+        lpips_val = lpips_loss_fn(render_norm, gt_norm)
+        losses['lpips_loss'] = lpips_val.mean()
 
     if 'camera_poses' in res and 'camera_poses' in gt:
         pose_pred = res['camera_poses']
