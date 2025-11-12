@@ -8,7 +8,7 @@ from ..utils.geometry import homogenize_points
 from .layers.pos_embed import RoPE2D, PositionGetter
 from .layers.block import BlockRope
 from .layers.attention import FlashAttentionRope
-from .layers.transformer_head import TransformerDecoder, LinearPts3d
+from .layers.transformer_head import TransformerDecoder, LinearPts3d,GaussianExpander
 from .layers.camera_head import CameraHead
 from .dinov2.hub.backbones import dinov2_vitl14, dinov2_vitl14_reg
 from huggingface_hub import PyTorchModelHubMixin
@@ -114,13 +114,13 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
             rope=self.rope,
         )
         gaussian_raw_channels = 4 + 3 + 1 + 3 + 1 + 3
-        splits_and_inits = [
-            (4, 1.0, 0.0),  # quats
-            (3, 0.00003, -7.0),  # scales
-            (1, 1.0, -2.0),  # opacities
-            (3 * self.nums_sh, 1.0, 0.0),  # residual_sh
-            (1, 1.0, -2.0),  # weights
-        ]
+        # splits_and_inits = [
+        #     (4, 1.0, 0.0),  # quats
+        #     (3, 0.00003, -7.0),  # scales
+        #     (1, 1.0, -2.0),  # opacities
+        #     (3 * self.nums_sh, 1.0, 0.0),  # residual_sh
+        #     (1, 1.0, -2.0),  # weights
+        # ]
         # self.gaussian_head =            LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=gaussian_raw_channels)
         self.gaussian_head =  GaussianExpander(dim_token=1024)
 
@@ -129,6 +129,8 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         # ----------------------
         self.conf_decoder = deepcopy(self.point_decoder)
         self.conf_head = LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=1)
+        self.sky_decoder = deepcopy(self.point_decoder)
+        self.sky_head = LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=1)
 
 
 
@@ -194,7 +196,7 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
 
         return torch.cat([final_output[0], final_output[1]], dim=-1), pos.reshape(B*N, hw, -1)
     
-    def forward(self, imgs):
+    def forward(self, imgs, train_sky=False):
         imgs = (imgs - self.image_mean) / self.image_std
 
         B, N, _, H, W = imgs.shape
@@ -208,38 +210,50 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
             hidden = hidden["x_norm_patchtokens"]
 
         hidden, pos = self.decode(hidden, N, H, W)
-
-        gaussian_hidden = self.gaussian_decoder(hidden, xpos=pos)
-        conf_hidden = self.conf_decoder(hidden, xpos=pos)
-        camera_hidden = self.camera_decoder(hidden, xpos=pos)
+        if train_sky:
+            sky_hidden = self.sky_decoder(hidden, xpos=pos)
+        else:
+            gaussian_hidden = self.gaussian_decoder(hidden, xpos=pos)
+            conf_hidden = self.conf_decoder(hidden, xpos=pos)
+            sky_hidden = self.sky_decoder(hidden, xpos=pos)
+            camera_hidden = self.camera_decoder(hidden, xpos=pos)
 
         with torch.amp.autocast(device_type='cuda', enabled=False):
+            if train_sky:
+                sky_hidden = sky_hidden.float()
+                sky = self.sky_head([sky_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
+            else:
             # local gaussians
-            gaussian_hidden = gaussian_hidden.float()
-            gaussians = self.gaussian_head([gaussian_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
-            # centers = ret['center']
-            # scales = ret['scale']
-            # quats = ret['quat']
-            # colors = ret['color']
-            # opacs = ret['opac']
-            # xy, z = ret.split([2, 1], dim=-1)
-            # z = torch.exp(z)
-            # local_points = torch.cat([xy * z, z], dim=-1)
+                gaussian_hidden = gaussian_hidden.float()
+                gaussians = self.gaussian_head([gaussian_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
+                # centers = ret['center']
+                # scales = ret['scale']
+                # quats = ret['quat']
+                # colors = ret['color']
+                # opacs = ret['opac']
+                # xy, z = ret.split([2, 1], dim=-1)
+                # z = torch.exp(z)
+                # local_points = torch.cat([xy * z, z], dim=-1)
+                sky_hidden = sky_hidden.float()
+                sky = self.sky_head([sky_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
+                # confidence
+                conf_hidden = conf_hidden.float()
+                conf = self.conf_head([conf_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
 
-            # confidence
-            conf_hidden = conf_hidden.float()
-            conf = self.conf_head([conf_hidden[:, self.patch_start_idx:]], (H, W)).reshape(B, N, H, W, -1)
-
-            # camera
-            camera_hidden = camera_hidden.float()
-            camera_poses = self.camera_head(camera_hidden[:, self.patch_start_idx:], patch_h, patch_w).reshape(B, N, 4, 4)
+                # camera
+                camera_hidden = camera_hidden.float()
+                camera_poses = self.camera_head(camera_hidden[:, self.patch_start_idx:], patch_h, patch_w).reshape(B, N, 4, 4)
 
             # unproject local points using camera poses
             # points = torch.einsum('bnij, bnhwj -> bnhwi', camera_poses, homogenize_points(local_points))[..., :3]
-
+        if train_sky:
+            return dict(
+                sky=sky
+            )
         return dict(
             # points=points,
             gaussians=gaussians,
             conf=conf,
             camera_poses=camera_poses,
+            sky=sky,
         )

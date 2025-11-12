@@ -1,0 +1,868 @@
+decoder.0.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.0.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.0.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.0.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.0.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.0.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.0.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.0.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.0.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.0.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.0.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.0.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.0.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.0.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.0.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.0.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.0.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.0.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.1.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.1.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.1.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.1.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.1.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.1.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.1.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.1.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.1.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.1.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.1.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.1.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.1.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.1.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.1.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.1.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.1.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.1.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.2.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.2.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.2.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.2.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.2.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.2.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.2.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.2.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.2.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.2.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.2.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.2.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.2.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.2.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.2.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.2.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.2.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.2.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.3.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.3.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.3.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.3.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.3.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.3.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.3.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.3.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.3.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.3.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.3.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.3.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.3.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.3.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.3.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.3.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.3.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.3.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.4.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.4.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.4.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.4.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.4.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.4.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.4.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.4.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.4.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.4.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.4.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.4.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.4.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.4.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.4.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.4.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.4.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.4.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.5.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.5.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.5.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.5.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.5.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.5.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.5.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.5.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.5.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.5.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.5.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.5.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.5.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.5.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.5.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.5.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.5.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.5.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.6.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.6.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.6.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.6.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.6.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.6.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.6.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.6.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.6.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.6.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.6.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.6.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.6.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.6.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.6.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.6.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.6.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.6.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.7.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.7.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.7.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.7.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.7.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.7.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.7.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.7.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.7.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.7.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.7.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.7.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.7.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.7.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.7.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.7.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.7.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.7.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.8.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.8.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.8.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.8.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.8.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.8.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.8.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.8.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.8.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.8.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.8.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.8.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.8.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.8.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.8.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.8.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.8.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.8.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.9.norm1.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.9.norm1.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.9.attn.qkv.weight                                    shape=(3072, 1024) requires_grad=True params=3145728
+decoder.9.attn.qkv.bias                                      shape=(3072,) requires_grad=True params=3072
+decoder.9.attn.proj.weight                                   shape=(1024, 1024) requires_grad=True params=1048576
+decoder.9.attn.proj.bias                                     shape=(1024,) requires_grad=True params=1024
+decoder.9.attn.q_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.9.attn.q_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.9.attn.k_norm.weight                                 shape=(64,) requires_grad=True params=64
+decoder.9.attn.k_norm.bias                                   shape=(64,) requires_grad=True params=64
+decoder.9.ls1.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.9.norm2.weight                                       shape=(1024,) requires_grad=True params=1024
+decoder.9.norm2.bias                                         shape=(1024,) requires_grad=True params=1024
+decoder.9.mlp.fc1.weight                                     shape=(4096, 1024) requires_grad=True params=4194304
+decoder.9.mlp.fc1.bias                                       shape=(4096,) requires_grad=True params=4096
+decoder.9.mlp.fc2.weight                                     shape=(1024, 4096) requires_grad=True params=4194304
+decoder.9.mlp.fc2.bias                                       shape=(1024,) requires_grad=True params=1024
+decoder.9.ls2.gamma                                          shape=(1024,) requires_grad=True params=1024
+decoder.10.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.10.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.10.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.10.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.10.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.10.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.10.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.10.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.10.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.10.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.10.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.10.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.10.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.10.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.10.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.10.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.10.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.10.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.11.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.11.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.11.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.11.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.11.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.11.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.11.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.11.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.11.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.11.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.11.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.11.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.11.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.11.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.11.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.11.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.11.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.11.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.12.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.12.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.12.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.12.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.12.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.12.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.12.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.12.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.12.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.12.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.12.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.12.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.12.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.12.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.12.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.12.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.12.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.12.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.13.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.13.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.13.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.13.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.13.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.13.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.13.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.13.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.13.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.13.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.13.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.13.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.13.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.13.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.13.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.13.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.13.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.13.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.14.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.14.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.14.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.14.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.14.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.14.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.14.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.14.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.14.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.14.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.14.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.14.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.14.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.14.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.14.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.14.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.14.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.14.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.15.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.15.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.15.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.15.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.15.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.15.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.15.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.15.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.15.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.15.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.15.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.15.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.15.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.15.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.15.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.15.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.15.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.15.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.16.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.16.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.16.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.16.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.16.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.16.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.16.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.16.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.16.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.16.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.16.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.16.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.16.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.16.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.16.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.16.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.16.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.16.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.17.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.17.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.17.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.17.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.17.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.17.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.17.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.17.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.17.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.17.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.17.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.17.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.17.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.17.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.17.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.17.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.17.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.17.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.18.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.18.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.18.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.18.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.18.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.18.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.18.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.18.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.18.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.18.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.18.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.18.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.18.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.18.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.18.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.18.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.18.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.18.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.19.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.19.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.19.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.19.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.19.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.19.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.19.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.19.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.19.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.19.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.19.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.19.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.19.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.19.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.19.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.19.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.19.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.19.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.20.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.20.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.20.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.20.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.20.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.20.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.20.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.20.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.20.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.20.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.20.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.20.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.20.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.20.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.20.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.20.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.20.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.20.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.21.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.21.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.21.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.21.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.21.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.21.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.21.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.21.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.21.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.21.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.21.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.21.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.21.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.21.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.21.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.21.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.21.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.21.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.22.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.22.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.22.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.22.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.22.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.22.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.22.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.22.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.22.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.22.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.22.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.22.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.22.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.22.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.22.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.22.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.22.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.22.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.23.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.23.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.23.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.23.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.23.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.23.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.23.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.23.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.23.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.23.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.23.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.23.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.23.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.23.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.23.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.23.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.23.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.23.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.24.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.24.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.24.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.24.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.24.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.24.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.24.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.24.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.24.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.24.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.24.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.24.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.24.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.24.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.24.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.24.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.24.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.24.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.25.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.25.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.25.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.25.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.25.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.25.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.25.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.25.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.25.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.25.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.25.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.25.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.25.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.25.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.25.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.25.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.25.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.25.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.26.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.26.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.26.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.26.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.26.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.26.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.26.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.26.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.26.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.26.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.26.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.26.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.26.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.26.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.26.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.26.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.26.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.26.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.27.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.27.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.27.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.27.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.27.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.27.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.27.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.27.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.27.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.27.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.27.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.27.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.27.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.27.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.27.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.27.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.27.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.27.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.28.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.28.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.28.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.28.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.28.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.28.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.28.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.28.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.28.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.28.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.28.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.28.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.28.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.28.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.28.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.28.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.28.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.28.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.29.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.29.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.29.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.29.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.29.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.29.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.29.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.29.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.29.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.29.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.29.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.29.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.29.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.29.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.29.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.29.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.29.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.29.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.30.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.30.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.30.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.30.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.30.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.30.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.30.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.30.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.30.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.30.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.30.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.30.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.30.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.30.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.30.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.30.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.30.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.30.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.31.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.31.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.31.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.31.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.31.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.31.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.31.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.31.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.31.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.31.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.31.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.31.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.31.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.31.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.31.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.31.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.31.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.31.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.32.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.32.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.32.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.32.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.32.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.32.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.32.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.32.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.32.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.32.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.32.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.32.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.32.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.32.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.32.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.32.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.32.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.32.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.33.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.33.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.33.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.33.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.33.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.33.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.33.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.33.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.33.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.33.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.33.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.33.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.33.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.33.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.33.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.33.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.33.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.33.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.34.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.34.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.34.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.34.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.34.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.34.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.34.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.34.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.34.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.34.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.34.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.34.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.34.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.34.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.34.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.34.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.34.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.34.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.35.norm1.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.35.norm1.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.35.attn.qkv.weight                                   shape=(3072, 1024) requires_grad=True params=3145728
+decoder.35.attn.qkv.bias                                     shape=(3072,) requires_grad=True params=3072
+decoder.35.attn.proj.weight                                  shape=(1024, 1024) requires_grad=True params=1048576
+decoder.35.attn.proj.bias                                    shape=(1024,) requires_grad=True params=1024
+decoder.35.attn.q_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.35.attn.q_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.35.attn.k_norm.weight                                shape=(64,) requires_grad=True params=64
+decoder.35.attn.k_norm.bias                                  shape=(64,) requires_grad=True params=64
+decoder.35.ls1.gamma                                         shape=(1024,) requires_grad=True params=1024
+decoder.35.norm2.weight                                      shape=(1024,) requires_grad=True params=1024
+decoder.35.norm2.bias                                        shape=(1024,) requires_grad=True params=1024
+decoder.35.mlp.fc1.weight                                    shape=(4096, 1024) requires_grad=True params=4194304
+decoder.35.mlp.fc1.bias                                      shape=(4096,) requires_grad=True params=4096
+decoder.35.mlp.fc2.weight                                    shape=(1024, 4096) requires_grad=True params=4194304
+decoder.35.mlp.fc2.bias                                      shape=(1024,) requires_grad=True params=1024
+decoder.35.ls2.gamma                                         shape=(1024,) requires_grad=True params=1024
+point_decoder.projects.weight                                shape=(1024, 2048) requires_grad=True params=2097152
+point_decoder.projects.bias                                  shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.0.norm1.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.0.norm1.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.0.attn.qkv.weight                       shape=(3072, 1024) requires_grad=True params=3145728
+point_decoder.blocks.0.attn.qkv.bias                         shape=(3072,) requires_grad=True params=3072
+point_decoder.blocks.0.attn.proj.weight                      shape=(1024, 1024) requires_grad=True params=1048576
+point_decoder.blocks.0.attn.proj.bias                        shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.0.norm2.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.0.norm2.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.0.mlp.fc1.weight                        shape=(4096, 1024) requires_grad=True params=4194304
+point_decoder.blocks.0.mlp.fc1.bias                          shape=(4096,) requires_grad=True params=4096
+point_decoder.blocks.0.mlp.fc2.weight                        shape=(1024, 4096) requires_grad=True params=4194304
+point_decoder.blocks.0.mlp.fc2.bias                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.1.norm1.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.1.norm1.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.1.attn.qkv.weight                       shape=(3072, 1024) requires_grad=True params=3145728
+point_decoder.blocks.1.attn.qkv.bias                         shape=(3072,) requires_grad=True params=3072
+point_decoder.blocks.1.attn.proj.weight                      shape=(1024, 1024) requires_grad=True params=1048576
+point_decoder.blocks.1.attn.proj.bias                        shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.1.norm2.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.1.norm2.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.1.mlp.fc1.weight                        shape=(4096, 1024) requires_grad=True params=4194304
+point_decoder.blocks.1.mlp.fc1.bias                          shape=(4096,) requires_grad=True params=4096
+point_decoder.blocks.1.mlp.fc2.weight                        shape=(1024, 4096) requires_grad=True params=4194304
+point_decoder.blocks.1.mlp.fc2.bias                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.2.norm1.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.2.norm1.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.2.attn.qkv.weight                       shape=(3072, 1024) requires_grad=True params=3145728
+point_decoder.blocks.2.attn.qkv.bias                         shape=(3072,) requires_grad=True params=3072
+point_decoder.blocks.2.attn.proj.weight                      shape=(1024, 1024) requires_grad=True params=1048576
+point_decoder.blocks.2.attn.proj.bias                        shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.2.norm2.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.2.norm2.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.2.mlp.fc1.weight                        shape=(4096, 1024) requires_grad=True params=4194304
+point_decoder.blocks.2.mlp.fc1.bias                          shape=(4096,) requires_grad=True params=4096
+point_decoder.blocks.2.mlp.fc2.weight                        shape=(1024, 4096) requires_grad=True params=4194304
+point_decoder.blocks.2.mlp.fc2.bias                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.3.norm1.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.3.norm1.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.3.attn.qkv.weight                       shape=(3072, 1024) requires_grad=True params=3145728
+point_decoder.blocks.3.attn.qkv.bias                         shape=(3072,) requires_grad=True params=3072
+point_decoder.blocks.3.attn.proj.weight                      shape=(1024, 1024) requires_grad=True params=1048576
+point_decoder.blocks.3.attn.proj.bias                        shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.3.norm2.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.3.norm2.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.3.mlp.fc1.weight                        shape=(4096, 1024) requires_grad=True params=4194304
+point_decoder.blocks.3.mlp.fc1.bias                          shape=(4096,) requires_grad=True params=4096
+point_decoder.blocks.3.mlp.fc2.weight                        shape=(1024, 4096) requires_grad=True params=4194304
+point_decoder.blocks.3.mlp.fc2.bias                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.4.norm1.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.4.norm1.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.4.attn.qkv.weight                       shape=(3072, 1024) requires_grad=True params=3145728
+point_decoder.blocks.4.attn.qkv.bias                         shape=(3072,) requires_grad=True params=3072
+point_decoder.blocks.4.attn.proj.weight                      shape=(1024, 1024) requires_grad=True params=1048576
+point_decoder.blocks.4.attn.proj.bias                        shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.4.norm2.weight                          shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.4.norm2.bias                            shape=(1024,) requires_grad=True params=1024
+point_decoder.blocks.4.mlp.fc1.weight                        shape=(4096, 1024) requires_grad=True params=4194304
+point_decoder.blocks.4.mlp.fc1.bias                          shape=(4096,) requires_grad=True params=4096
+point_decoder.blocks.4.mlp.fc2.weight                        shape=(1024, 4096) requires_grad=True params=4194304
+point_decoder.blocks.4.mlp.fc2.bias                          shape=(1024,) requires_grad=True params=1024
+point_decoder.linear_out.weight                              shape=(1024, 1024) requires_grad=True params=1048576
+point_decoder.linear_out.bias                                shape=(1024,) requires_grad=True params=1024
+point_head.proj.weight                                       shape=(588, 1024) requires_grad=True params=602112
+point_head.proj.bias                                         shape=(588,) requires_grad=True params=588
+conf_decoder.projects.weight                                 shape=(1024, 2048) requires_grad=True params=2097152
+conf_decoder.projects.bias                                   shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.0.norm1.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.0.norm1.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.0.attn.qkv.weight                        shape=(3072, 1024) requires_grad=True params=3145728
+conf_decoder.blocks.0.attn.qkv.bias                          shape=(3072,) requires_grad=True params=3072
+conf_decoder.blocks.0.attn.proj.weight                       shape=(1024, 1024) requires_grad=True params=1048576
+conf_decoder.blocks.0.attn.proj.bias                         shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.0.norm2.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.0.norm2.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.0.mlp.fc1.weight                         shape=(4096, 1024) requires_grad=True params=4194304
+conf_decoder.blocks.0.mlp.fc1.bias                           shape=(4096,) requires_grad=True params=4096
+conf_decoder.blocks.0.mlp.fc2.weight                         shape=(1024, 4096) requires_grad=True params=4194304
+conf_decoder.blocks.0.mlp.fc2.bias                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.1.norm1.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.1.norm1.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.1.attn.qkv.weight                        shape=(3072, 1024) requires_grad=True params=3145728
+conf_decoder.blocks.1.attn.qkv.bias                          shape=(3072,) requires_grad=True params=3072
+conf_decoder.blocks.1.attn.proj.weight                       shape=(1024, 1024) requires_grad=True params=1048576
+conf_decoder.blocks.1.attn.proj.bias                         shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.1.norm2.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.1.norm2.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.1.mlp.fc1.weight                         shape=(4096, 1024) requires_grad=True params=4194304
+conf_decoder.blocks.1.mlp.fc1.bias                           shape=(4096,) requires_grad=True params=4096
+conf_decoder.blocks.1.mlp.fc2.weight                         shape=(1024, 4096) requires_grad=True params=4194304
+conf_decoder.blocks.1.mlp.fc2.bias                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.2.norm1.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.2.norm1.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.2.attn.qkv.weight                        shape=(3072, 1024) requires_grad=True params=3145728
+conf_decoder.blocks.2.attn.qkv.bias                          shape=(3072,) requires_grad=True params=3072
+conf_decoder.blocks.2.attn.proj.weight                       shape=(1024, 1024) requires_grad=True params=1048576
+conf_decoder.blocks.2.attn.proj.bias                         shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.2.norm2.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.2.norm2.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.2.mlp.fc1.weight                         shape=(4096, 1024) requires_grad=True params=4194304
+conf_decoder.blocks.2.mlp.fc1.bias                           shape=(4096,) requires_grad=True params=4096
+conf_decoder.blocks.2.mlp.fc2.weight                         shape=(1024, 4096) requires_grad=True params=4194304
+conf_decoder.blocks.2.mlp.fc2.bias                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.3.norm1.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.3.norm1.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.3.attn.qkv.weight                        shape=(3072, 1024) requires_grad=True params=3145728
+conf_decoder.blocks.3.attn.qkv.bias                          shape=(3072,) requires_grad=True params=3072
+conf_decoder.blocks.3.attn.proj.weight                       shape=(1024, 1024) requires_grad=True params=1048576
+conf_decoder.blocks.3.attn.proj.bias                         shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.3.norm2.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.3.norm2.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.3.mlp.fc1.weight                         shape=(4096, 1024) requires_grad=True params=4194304
+conf_decoder.blocks.3.mlp.fc1.bias                           shape=(4096,) requires_grad=True params=4096
+conf_decoder.blocks.3.mlp.fc2.weight                         shape=(1024, 4096) requires_grad=True params=4194304
+conf_decoder.blocks.3.mlp.fc2.bias                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.4.norm1.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.4.norm1.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.4.attn.qkv.weight                        shape=(3072, 1024) requires_grad=True params=3145728
+conf_decoder.blocks.4.attn.qkv.bias                          shape=(3072,) requires_grad=True params=3072
+conf_decoder.blocks.4.attn.proj.weight                       shape=(1024, 1024) requires_grad=True params=1048576
+conf_decoder.blocks.4.attn.proj.bias                         shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.4.norm2.weight                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.4.norm2.bias                             shape=(1024,) requires_grad=True params=1024
+conf_decoder.blocks.4.mlp.fc1.weight                         shape=(4096, 1024) requires_grad=True params=4194304
+conf_decoder.blocks.4.mlp.fc1.bias                           shape=(4096,) requires_grad=True params=4096
+conf_decoder.blocks.4.mlp.fc2.weight                         shape=(1024, 4096) requires_grad=True params=4194304
+conf_decoder.blocks.4.mlp.fc2.bias                           shape=(1024,) requires_grad=True params=1024
+conf_decoder.linear_out.weight                               shape=(1024, 1024) requires_grad=True params=1048576
+conf_decoder.linear_out.bias                                 shape=(1024,) requires_grad=True params=1024
+conf_head.proj.weight                                        shape=(196, 1024) requires_grad=True params=200704
+conf_head.proj.bias                                          shape=(196,) requires_grad=True params=196
+camera_decoder.projects.weight                               shape=(1024, 2048) requires_grad=True params=2097152
+camera_decoder.projects.bias                                 shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.0.norm1.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.0.norm1.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.0.attn.qkv.weight                      shape=(3072, 1024) requires_grad=True params=3145728
+camera_decoder.blocks.0.attn.qkv.bias                        shape=(3072,) requires_grad=True params=3072
+camera_decoder.blocks.0.attn.proj.weight                     shape=(1024, 1024) requires_grad=True params=1048576
+camera_decoder.blocks.0.attn.proj.bias                       shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.0.norm2.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.0.norm2.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.0.mlp.fc1.weight                       shape=(4096, 1024) requires_grad=True params=4194304
+camera_decoder.blocks.0.mlp.fc1.bias                         shape=(4096,) requires_grad=True params=4096
+camera_decoder.blocks.0.mlp.fc2.weight                       shape=(1024, 4096) requires_grad=True params=4194304
+camera_decoder.blocks.0.mlp.fc2.bias                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.1.norm1.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.1.norm1.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.1.attn.qkv.weight                      shape=(3072, 1024) requires_grad=True params=3145728
+camera_decoder.blocks.1.attn.qkv.bias                        shape=(3072,) requires_grad=True params=3072
+camera_decoder.blocks.1.attn.proj.weight                     shape=(1024, 1024) requires_grad=True params=1048576
+camera_decoder.blocks.1.attn.proj.bias                       shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.1.norm2.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.1.norm2.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.1.mlp.fc1.weight                       shape=(4096, 1024) requires_grad=True params=4194304
+camera_decoder.blocks.1.mlp.fc1.bias                         shape=(4096,) requires_grad=True params=4096
+camera_decoder.blocks.1.mlp.fc2.weight                       shape=(1024, 4096) requires_grad=True params=4194304
+camera_decoder.blocks.1.mlp.fc2.bias                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.2.norm1.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.2.norm1.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.2.attn.qkv.weight                      shape=(3072, 1024) requires_grad=True params=3145728
+camera_decoder.blocks.2.attn.qkv.bias                        shape=(3072,) requires_grad=True params=3072
+camera_decoder.blocks.2.attn.proj.weight                     shape=(1024, 1024) requires_grad=True params=1048576
+camera_decoder.blocks.2.attn.proj.bias                       shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.2.norm2.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.2.norm2.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.2.mlp.fc1.weight                       shape=(4096, 1024) requires_grad=True params=4194304
+camera_decoder.blocks.2.mlp.fc1.bias                         shape=(4096,) requires_grad=True params=4096
+camera_decoder.blocks.2.mlp.fc2.weight                       shape=(1024, 4096) requires_grad=True params=4194304
+camera_decoder.blocks.2.mlp.fc2.bias                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.3.norm1.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.3.norm1.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.3.attn.qkv.weight                      shape=(3072, 1024) requires_grad=True params=3145728
+camera_decoder.blocks.3.attn.qkv.bias                        shape=(3072,) requires_grad=True params=3072
+camera_decoder.blocks.3.attn.proj.weight                     shape=(1024, 1024) requires_grad=True params=1048576
+camera_decoder.blocks.3.attn.proj.bias                       shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.3.norm2.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.3.norm2.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.3.mlp.fc1.weight                       shape=(4096, 1024) requires_grad=True params=4194304
+camera_decoder.blocks.3.mlp.fc1.bias                         shape=(4096,) requires_grad=True params=4096
+camera_decoder.blocks.3.mlp.fc2.weight                       shape=(1024, 4096) requires_grad=True params=4194304
+camera_decoder.blocks.3.mlp.fc2.bias                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.4.norm1.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.4.norm1.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.4.attn.qkv.weight                      shape=(3072, 1024) requires_grad=True params=3145728
+camera_decoder.blocks.4.attn.qkv.bias                        shape=(3072,) requires_grad=True params=3072
+camera_decoder.blocks.4.attn.proj.weight                     shape=(1024, 1024) requires_grad=True params=1048576
+camera_decoder.blocks.4.attn.proj.bias                       shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.4.norm2.weight                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.4.norm2.bias                           shape=(1024,) requires_grad=True params=1024
+camera_decoder.blocks.4.mlp.fc1.weight                       shape=(4096, 1024) requires_grad=True params=4194304
+camera_decoder.blocks.4.mlp.fc1.bias                         shape=(4096,) requires_grad=True params=4096
+camera_decoder.blocks.4.mlp.fc2.weight                       shape=(1024, 4096) requires_grad=True params=4194304
+camera_decoder.blocks.4.mlp.fc2.bias                         shape=(1024,) requires_grad=True params=1024
+camera_decoder.linear_out.weight                             shape=(512, 1024) requires_grad=True params=524288
+camera_decoder.linear_out.bias                               shape=(512,) requires_grad=True params=512
+camera_head.res_conv.0.res_conv1.weight                      shape=(512, 512) requires_grad=True params=262144
+camera_head.res_conv.0.res_conv1.bias                        shape=(512,) requires_grad=True params=512
+camera_head.res_conv.0.res_conv2.weight                      shape=(512, 512) requires_grad=True params=262144
+camera_head.res_conv.0.res_conv2.bias                        shape=(512,) requires_grad=True params=512
+camera_head.res_conv.0.res_conv3.weight                      shape=(512, 512) requires_grad=True params=262144
+camera_head.res_conv.0.res_conv3.bias                        shape=(512,) requires_grad=True params=512
+camera_head.res_conv.1.res_conv1.weight                      shape=(512, 512) requires_grad=True params=262144
+camera_head.res_conv.1.res_conv1.bias                        shape=(512,) requires_grad=True params=512
+camera_head.res_conv.1.res_conv2.weight                      shape=(512, 512) requires_grad=True params=262144
+camera_head.res_conv.1.res_conv2.bias                        shape=(512,) requires_grad=True params=512
+camera_head.res_conv.1.res_conv3.weight                      shape=(512, 512) requires_grad=True params=262144
+camera_head.res_conv.1.res_conv3.bias                        shape=(512,) requires_grad=True params=512
+camera_head.more_mlps.0.weight                               shape=(512, 512) requires_grad=True params=262144
+camera_head.more_mlps.0.bias                                 shape=(512,) requires_grad=True params=512
+camera_head.more_mlps.2.weight                               shape=(512, 512) requires_grad=True params=262144
+camera_head.more_mlps.2.bias                                 shape=(512,) requires_grad=True params=512
+camera_head.fc_t.weight                                      shape=(3, 512) requires_grad=True params=1536
+camera_head.fc_t.bias                                        shape=(3,) requires_grad=True params=3
+camera_head.fc_rot.weight                                    shape=(9, 512) requires_grad=True params=4608
+camera_head.fc_rot.bias                                      shape=(9,) requires_grad=True params=9
+
+📊 Total parameters: 958,696,732
+🧠 Trainable parameters: 958,696,732
+🧊 Frozen parameters: 0

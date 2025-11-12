@@ -44,42 +44,11 @@ REST_LR = 5e-5
 GRAD_CLIP_NORM = 1.0
 
 # ---------------------------
-# You must provide these in your project
-# from pi3.models.pi3 import Pi3
-# from your_dataset_module import SimpleImageDataset
-# ---------------------------
 try:
     from pi3.models.pi3 import Pi3
 except Exception as e:
     print("Warning: failed to import Pi3. Make sure your PYTHONPATH includes the project. Error:", e)
     Pi3 = None
-
-# # Placeholder dataset class name - replace with your actual dataset import
-# try:
-#     from your_dataset_module import SimpleImageDataset  # <- replace with real import
-# except Exception:
-#     # if not available, define a minimal placeholder to avoid crash during static analysis
-#     class SimpleImageDataset:
-#         def __init__(self, data_path, interval=1, out_size=(224, 224)):
-#             self.data_path = data_path
-#             self.interval = interval
-#             self.out_size = out_size
-#             self._len = 10000
-#
-#         def __len__(self):
-#             return self._len
-#
-#         def __getitem__(self, idx):
-#             # return fake data - in practice you must use real dataset
-#             img = torch.randn(3, self.out_size[0], self.out_size[1])
-#             # gt must be a dict with appropriate tensors used by compute_losses
-#             gt = {
-#                 'points': torch.randn(1, 3),
-#                 'local_points': torch.randn(1, 1024, 3),
-#                 'conf': torch.randint(0, 2, (1, 1024)).float(),
-#                 'camera_poses': torch.randn(1, 6)
-#             }
-#             return img, gt
 
 
 # ---------- 辅助函数 ----------
@@ -175,8 +144,10 @@ def train_worker(local_rank, world_size, args):
 
     # dataloader factory
     def make_dataloader_for_resolution(h, w, batch_size, train_sky=False):
-        if train_sky:
-            dataset = SkyDataset(args.data_path)
+        if not train_sky:
+            # This script is focused on sky-only training. Guard against accidental non-sky mode.
+            raise ValueError("This training script is configured for sky-only training. Set --train_sky True.")
+        dataset = SkyDataset(args.data_path)
         sampler = DistributedSampler(dataset, num_replicas=world_size, rank=local_rank, shuffle=True)
         dl = DataLoader(dataset, batch_size=batch_size, sampler=sampler,
                         num_workers=args.num_workers, pin_memory=True, drop_last=True)
@@ -184,141 +155,91 @@ def train_worker(local_rank, world_size, args):
 
     ### gaussian head training
     if args.train_sky == False:
-        for stage_idx in [1, 2]:
-            if stage_idx == 1:
-                stage_name = "stage1"
-                h, w = STAGE1_RES
-                batch_size = choose_batch_size_for_resolution(h, w, BATCH_MIN, BATCH_MAX,
-                                                              target_pixels_per_batch=200_000)
-                epochs = STAGE_EPOCHS
-            else:
-                stage_name = "stage2"
-                h, w = sample_random_resolution(STAGE2_PIX_MIN, STAGE2_PIX_MAX, STAGE2_AR_MIN, STAGE2_AR_MAX)
-                batch_size = choose_batch_size_for_resolution(h, w, BATCH_MIN, BATCH_MAX,
-                                                              target_pixels_per_batch=200_000)
-                epochs = STAGE_EPOCHS
-
-            total_steps = epochs * ITERS_PER_EPOCH
-            max_lr_list = [ENCODER_LR, REST_LR] if len(param_groups) > 1 else [REST_LR]
-            scheduler = OneCycleLR(optimizer, max_lr=max_lr_list, total_steps=total_steps, pct_start=0.1,
-                                   anneal_strategy='cos', div_factor=10.0, final_div_factor=1e4)
-
-            if local_rank == 0:
-                print(
-                    f"[Rank {local_rank}] Starting {stage_name}: resolution=({h},{w}), batch_size={batch_size}, epochs={epochs}, total_steps={total_steps}")
-
-            dataloader, sampler = make_dataloader_for_resolution(h, w, batch_size, train_sky=args.train_sky)
-
-            global_step = 0
-            for epoch in range(epochs):
-                sampler.set_epoch(epoch)
-                model.train()
-                epoch_loss = 0.0
-                it = 0
-                data_iter = iter(dataloader)
-                while it < ITERS_PER_EPOCH:
-                    try:
-                        imgs, gt = next(data_iter)
-                    except StopIteration:
-                        data_iter = iter(dataloader)
-                        imgs, gt = next(data_iter)
-                    imgs = imgs.to(device)
-                    for k, v in gt.items():
-                        if torch.is_tensor(v):
-                            gt[k] = v.to(device)
-
-                    optimizer.zero_grad()
-                    with torch.cuda.amp.autocast(enabled=args.amp):
-                        res = model(imgs, train_sky=args.train_sky)
-                        losses = compute_losses(res, gt, device)
-                        loss = losses['total_loss']
-
-                    scaler.scale(loss).backward()
-                    scaler.unscale_(optimizer)
-                    torch.nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP_NORM)
-                    scaler.step(optimizer)
-                    scaler.update()
-
-                    scheduler.step()
-                    epoch_loss += loss.item()
-                    it += 1
-                    global_step += 1
-
-                    if (it % 50 == 0 or it == 1) and local_rank == 0:
-                        print(
-                            f"[{stage_name}] Epoch {epoch + 1}/{epochs} Iter {it}/{ITERS_PER_EPOCH} loss={loss.item():.6f}")
-
-                if local_rank == 0 and ((epoch + 1) % args.save_interval == 0):
-                    os.makedirs(args.save_dir, exist_ok=True)
-                    ckpt_path = os.path.join(args.save_dir, f"pi3_{stage_name}_epoch{epoch + 1}.pt")
-                    torch.save(model.module.state_dict(), ckpt_path)
-                    print(f"[Rank 0] Saved checkpoint: {ckpt_path}")
-
-            if local_rank == 0:
-                print(f"[Rank {local_rank}] Finished {stage_name}")
-
+        # Keep original non-sky code path but do not run it in sky-only script.
+        if local_rank == 0:
+            print("Non-sky training path is disabled in this script. Use --train_sky True to train sky head.")
     # confidence head single-stage (same as your original logic)
     else:
-        if len(conf_params) == 0:
+        # collect conf/sky params robustly
+        # freeze all params first
+        for name, p in model.module.named_parameters():
+            p.requires_grad = False
+
+        # try to find sky-related parameters (sky_head, conf, confidence)
+        sky_param_names = [n for n, _ in model.module.named_parameters() if ('sky' in n.lower() or 'conf' in n.lower())]
+        sky_params = [p for n, p in model.module.named_parameters() if ('sky' in n.lower() or 'conf' in n.lower())]
+
+        if len(sky_params) == 0:
             if local_rank == 0:
-                print("No conf params detected, skipping confidence head stage.")
+                print("No sky-related parameters found in model. Check module names (expect 'sky' or 'confidence' substring). Skipping training.")
         else:
-            # freeze all then unfreeze conf params
-            for name, p in model.module.named_parameters():
-                p.requires_grad = False
-            # for p in conf_params:
-            #     p.requires_grad = True
-            # ========== 4. 定义 optimizer 只包含 sky_params ==========
-            sky_params = list(model.sky_head.parameters())
-            opt_sky = torch.optim.AdamW(sky_params, lr=REST_LR)
+            # enable grads for sky params
+            for p in sky_params:
+                p.requires_grad = True
+
+            # define optimizer only containing sky params
+            opt_sky = torch.optim.AdamW(sky_params, lr=REST_LR, weight_decay=1e-2)
             total_steps_sky = args.sky_epochs * ITERS_PER_EPOCH
-            scheduler_sky = torch.optim.lr_scheduler.OneCycleLR(
+            scheduler_sky = OneCycleLR(
                 opt_sky,
                 max_lr=REST_LR,
                 total_steps=total_steps_sky,
                 pct_start=0.1,
                 anneal_strategy='cos'
             )
-            # opt_conf = torch.optim.AdamW([p for p in conf_params if p.requires_grad], lr=REST_LR)
-            # total_steps_conf = args.conf_epochs * ITERS_PER_EPOCH
-            # scheduler_conf = OneCycleLR(opt_conf, max_lr=REST_LR, total_steps=total_steps_conf, pct_start=0.1, anneal_strategy='cos')
 
             h, w = sample_random_resolution(STAGE2_PIX_MIN, STAGE2_PIX_MAX, STAGE2_AR_MIN, STAGE2_AR_MAX)
             batch_size = choose_batch_size_for_resolution(h, w)
-            dataloader_sky, sampler_sky = make_dataloader_for_resolution(h, w, batch_size, train_sky=args.train_sky)
+            dataloader_sky, sampler_sky = make_dataloader_for_resolution(h, w, batch_size, train_sky=True)
 
             if local_rank == 0:
                 print(
                     f"[Rank {local_rank}] Starting confidence-head-only training: resolution=({h},{w}), batch_size={batch_size}")
 
             step = 0
-            for epoch in range(args.conf_epochs):
+            # training loop
+            for epoch in range(args.sky_epochs):
                 sampler_sky.set_epoch(epoch)
                 model.train()
                 it = 0
                 data_iter = iter(dataloader_sky)
                 while it < ITERS_PER_EPOCH:
                     try:
-                        imgs, gt = next(data_iter)
+                        gt = next(data_iter)
                     except StopIteration:
                         data_iter = iter(dataloader_sky)
-                        imgs, gt = next(data_iter)
+                        gt = next(data_iter)
+                    imgs = gt['image']
                     imgs = imgs.to(device)
+                    # move tensors in gt to device
                     for k, v in gt.items():
                         if torch.is_tensor(v):
                             gt[k] = v.to(device)
 
                     opt_sky.zero_grad()
                     with torch.cuda.amp.autocast(enabled=args.amp):
-                        res = model(imgs)
-                        if 'sky' in res:
-                            # pred_conf = torch.sigmoid(res['conf'])
-                            loss_sky = compute_loss_sky(res, gt) * LAMBDA_CONF
-                        else:
-                            loss_sky = torch.tensor(0.0, device=device)
-                    loss_sky.backward()
+                        res = model(imgs, train_sky=True)
+
+                        # ensure 'sky' in res
+                        if 'sky' not in res:
+                            # skip this batch if model didn't return sky predictions
+                            if local_rank == 0:
+                                print("Warning: model did not return 'sky' in forward pass. Skipping batch.")
+                            it += 1
+                            continue
+
+                        loss_sky = compute_loss_sky(res, gt)  # user-defined loss
+                        # guard against NaN and inf
+                        loss_sky = torch.nan_to_num(loss_sky, nan=0.0, posinf=1e6, neginf=-1e6)
+                        loss_sky = loss_sky * LAMBDA_CONF
+
+                    scaler.scale(loss_sky).backward()
+                    # unscale grads for clipping
+                    scaler.unscale_(opt_sky)
                     torch.nn.utils.clip_grad_norm_(sky_params, GRAD_CLIP_NORM)
-                    opt_sky.step()
+                    scaler.step(opt_sky)
+                    scaler.update()
+
                     scheduler_sky.step()
 
                     it += 1
@@ -328,8 +249,11 @@ def train_worker(local_rank, world_size, args):
                             f"[conf stage] Epoch {epoch + 1} Iter {it}/{ITERS_PER_EPOCH} loss_conf={loss_sky.item():.6f}")
 
             if local_rank == 0:
+                os.makedirs(args.save_dir, exist_ok=True)
+                # save only sky-related parameters to reduce size
+                state = {k: v for k, v in model.module.state_dict().items() if ('sky' in k.lower() or 'conf' in k.lower())}
                 ckpt_path = os.path.join(args.save_dir, "pi3_sky_head_trained.pt")
-                torch.save(model.module.state_dict(), ckpt_path)
+                torch.save(state, ckpt_path)
                 print(f"[Rank 0] Saved conf-head checkpoint: {ckpt_path}")
 
     dist.destroy_process_group()
@@ -340,7 +264,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--gpus", type=int, default=None,
                         help="Number of GPUs to use on this machine. Default: auto-detect")
-    parser.add_argument("--data_path", type=str, required=True, help="Path to dataset")
+    parser.add_argument("--data-path", type=str, required=True, help="Path to dataset")
     parser.add_argument("--save-dir", type=str, required=True, help="Where to save checkpoints")
     parser.add_argument("--interval", type=int, default=1, help="Dataset interval option")
     parser.add_argument("--amp", type=lambda x: (str(x).lower() == 'true'), default=True, help="Use AMP (True/False)")
@@ -348,8 +272,8 @@ def parse_args():
     parser.add_argument("--save-interval", type=int, default=1, help="how many epochs between saves")
     parser.add_argument("--pretrained-vggt", type=str, default=None, help="path to pretrained vgtt checkpoint")
     parser.add_argument("--freeze-encoder", action='store_true', help="freeze encoder at start")
-    parser.add_argument("--sky_epochs", type=int, default=20, help="epochs for confidence head training")
-    parser.add_argument("--train_sky", type=bool, default=False, help="epochs for confidence head training")
+    parser.add_argument("--sky-epochs", type=int, default=20, help="epochs for confidence head training")
+    parser.add_argument("--train-sky", type=lambda x: (str(x).lower() == 'true'), default=True, help="train sky head only (True/False)")
     return parser.parse_args()
 
 
@@ -367,7 +291,6 @@ def main():
                 f"Warning: torch.cuda.device_count()={torch.cuda.device_count()} < requested --gpus {world_size}. Using available device count instead.")
             world_size = torch.cuda.device_count()
 
-    # default target: 10 GPUs if available and user asked for 10
     if world_size <= 0:
         raise RuntimeError("No GPUs available.")
 
