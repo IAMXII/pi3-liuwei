@@ -128,9 +128,9 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         #     Conf Decoder
         # ----------------------
         self.conf_decoder = deepcopy(self.point_decoder)
-        self.conf_head = LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=1)
+        self.conf_head = LinearPts3d(patch_size=14, dec_embed_dim=1024, output_dim=1)
         self.sky_decoder = deepcopy(self.point_decoder)
-        self.sky_head = LinearPts3d(patch_size=14, dec_embed_dim=4096, output_dim=1)
+        self.sky_head = LinearPts3d(patch_size=14, dec_embed_dim=1024, output_dim=1)
 
 
 

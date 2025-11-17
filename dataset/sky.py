@@ -17,7 +17,7 @@ class SkyDataset(Dataset):
                 gts/
     """
 
-    def __init__(self, root_dir, split='train', img_size=(512, 512)):
+    def __init__(self, root_dir, split='train', img_size=(392, 392)):
         """
         Args:
             root_dir (str): 数据集根目录
@@ -48,8 +48,8 @@ class SkyDataset(Dataset):
         self.img_transform = transforms.Compose([
             transforms.Resize(self.img_size, interpolation=Image.BILINEAR),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225]),
+            # transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            #                      std=[0.229, 0.224, 0.225]),
         ])
 
         # 掩膜转换（使用最近邻插值，防止混合灰度）

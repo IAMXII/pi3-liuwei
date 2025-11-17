@@ -1,0 +1,20 @@
+{"time":"2025-11-12T17:41:18.983085071+08:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-12T17:41:20.454069557+08:00","level":"INFO","msg":"stream: created new stream","id":"73x0wnbb"}
+{"time":"2025-11-12T17:41:20.454842063+08:00","level":"INFO","msg":"handler: started","stream_id":"73x0wnbb"}
+{"time":"2025-11-12T17:41:20.455946163+08:00","level":"INFO","msg":"stream: started","id":"73x0wnbb"}
+{"time":"2025-11-12T17:41:20.455975709+08:00","level":"INFO","msg":"writer: started","stream_id":"73x0wnbb"}
+{"time":"2025-11-12T17:41:20.455984793+08:00","level":"INFO","msg":"sender: started","stream_id":"73x0wnbb"}
+{"time":"2025-11-12T17:42:24.366770404+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:42:26.792995444+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:42:39.362794069+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:42:41.869082293+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:43:07.566012548+08:00","level":"INFO","msg":"stream: closing","id":"73x0wnbb"}
+{"time":"2025-11-12T17:43:09.329559924+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:43:10.148883283+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-12T17:43:11.936549414+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:43:16.378822036+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:43:24.938970368+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:43:45.929012221+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/1923354735/pi3-sky-training/73x0wnbb/file_stream\": EOF"}
+{"time":"2025-11-12T17:43:49.759170314+08:00","level":"INFO","msg":"handler: closed","stream_id":"73x0wnbb"}
+{"time":"2025-11-12T17:43:49.759432754+08:00","level":"INFO","msg":"sender: closed","stream_id":"73x0wnbb"}
+{"time":"2025-11-12T17:43:49.759462184+08:00","level":"INFO","msg":"stream: closed","id":"73x0wnbb"}

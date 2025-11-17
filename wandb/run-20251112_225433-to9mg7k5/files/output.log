@@ -1,0 +1,119 @@
+/home/liuwei/mnt/vggt/pi3-liuwei/train_sky.py:552: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=args.amp):
+[sky stage] Epoch 1 Iter 0/800 loss_sky=0.001139
+[sky stage] Epoch 1 Iter 1/800 loss_sky=0.000017
+[sky stage] Epoch 1 Iter 50/800 loss_sky=0.000203
+[sky stage] Epoch 1 Iter 100/800 loss_sky=0.000311
+[sky stage] Epoch 1 Iter 150/800 loss_sky=0.000206
+[sky stage] Epoch 1 Iter 200/800 loss_sky=0.001854
+[sky stage] Epoch 1 Iter 250/800 loss_sky=0.000362
+[sky stage] Epoch 1 Iter 300/800 loss_sky=0.000194
+[sky stage] Epoch 1 Iter 350/800 loss_sky=0.000108
+[sky stage] Epoch 1 Iter 400/800 loss_sky=0.000791
+[sky stage] Epoch 1 Iter 450/800 loss_sky=0.001048
+[sky stage] Epoch 1 Iter 500/800 loss_sky=0.008200
+[sky stage] Epoch 1 Iter 550/800 loss_sky=0.000558
+[sky stage] Epoch 1 Iter 600/800 loss_sky=0.006200
+[sky stage] Epoch 1 Iter 650/800 loss_sky=0.000535
+[sky stage] Epoch 1 Iter 700/800 loss_sky=0.000707
+[sky stage] Epoch 1 Iter 750/800 loss_sky=0.001772
+/home/liuwei/mnt/vggt/pi3-liuwei/train_sky.py:455: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+[Epoch 1] ✅ Validation done: loss=0.054664, IoU=0.8880
+[Rank 0] 💾 Saved model to ./ckpts/pi3_sky_best_1.safetensors
+[sky stage] Epoch 2 Iter 0/800 loss_sky=0.003146
+[sky stage] Epoch 2 Iter 1/800 loss_sky=0.000297
+[sky stage] Epoch 2 Iter 50/800 loss_sky=0.000073
+[sky stage] Epoch 2 Iter 100/800 loss_sky=0.005523
+[sky stage] Epoch 2 Iter 150/800 loss_sky=0.000046
+[sky stage] Epoch 2 Iter 200/800 loss_sky=0.000360
+[sky stage] Epoch 2 Iter 250/800 loss_sky=0.001217
+[sky stage] Epoch 2 Iter 300/800 loss_sky=0.001169
+[sky stage] Epoch 2 Iter 350/800 loss_sky=0.000845
+[sky stage] Epoch 2 Iter 400/800 loss_sky=0.010193
+[sky stage] Epoch 2 Iter 450/800 loss_sky=0.003826
+[sky stage] Epoch 2 Iter 500/800 loss_sky=0.001256
+[sky stage] Epoch 2 Iter 550/800 loss_sky=0.000633
+[sky stage] Epoch 2 Iter 600/800 loss_sky=0.000784
+[sky stage] Epoch 2 Iter 650/800 loss_sky=0.001912
+[sky stage] Epoch 2 Iter 700/800 loss_sky=0.001208
+[sky stage] Epoch 2 Iter 750/800 loss_sky=0.001517
+[Epoch 2] ✅ Validation done: loss=0.056135, IoU=0.8823
+[Rank 0] 💾 Saved model to ./ckpts/pi3_sky_best_1.safetensors
+[sky stage] Epoch 3 Iter 0/800 loss_sky=0.000112
+[sky stage] Epoch 3 Iter 1/800 loss_sky=0.000048
+[sky stage] Epoch 3 Iter 50/800 loss_sky=0.007988
+[sky stage] Epoch 3 Iter 100/800 loss_sky=0.000010
+[sky stage] Epoch 3 Iter 150/800 loss_sky=0.001321
+[sky stage] Epoch 3 Iter 200/800 loss_sky=0.000501
+[sky stage] Epoch 3 Iter 250/800 loss_sky=0.000272
+[sky stage] Epoch 3 Iter 300/800 loss_sky=0.005324
+[sky stage] Epoch 3 Iter 350/800 loss_sky=0.000299
+[sky stage] Epoch 3 Iter 400/800 loss_sky=0.000809
+[sky stage] Epoch 3 Iter 450/800 loss_sky=0.000005
+[sky stage] Epoch 3 Iter 500/800 loss_sky=0.000799
+[sky stage] Epoch 3 Iter 550/800 loss_sky=0.000447
+[sky stage] Epoch 3 Iter 600/800 loss_sky=0.003232
+[sky stage] Epoch 3 Iter 650/800 loss_sky=0.000992
+[sky stage] Epoch 3 Iter 700/800 loss_sky=0.000961
+[sky stage] Epoch 3 Iter 750/800 loss_sky=0.002066
+[Epoch 3] ✅ Validation done: loss=0.064683, IoU=0.8616
+[Rank 0] 💾 Saved model to ./ckpts/pi3_sky_best_1.safetensors
+[sky stage] Epoch 4 Iter 0/800 loss_sky=0.001247
+[sky stage] Epoch 4 Iter 1/800 loss_sky=0.000477
+[sky stage] Epoch 4 Iter 50/800 loss_sky=0.001806
+[sky stage] Epoch 4 Iter 100/800 loss_sky=0.001728
+[sky stage] Epoch 4 Iter 150/800 loss_sky=0.000740
+[sky stage] Epoch 4 Iter 200/800 loss_sky=0.001131
+[sky stage] Epoch 4 Iter 250/800 loss_sky=0.000117
+[sky stage] Epoch 4 Iter 300/800 loss_sky=0.002042
+[sky stage] Epoch 4 Iter 350/800 loss_sky=0.000162
+[sky stage] Epoch 4 Iter 400/800 loss_sky=0.000130
+[sky stage] Epoch 4 Iter 450/800 loss_sky=0.000352
+[sky stage] Epoch 4 Iter 500/800 loss_sky=0.000004
+[sky stage] Epoch 4 Iter 550/800 loss_sky=0.000677
+[sky stage] Epoch 4 Iter 600/800 loss_sky=0.000730
+[sky stage] Epoch 4 Iter 650/800 loss_sky=0.003258
+[sky stage] Epoch 4 Iter 700/800 loss_sky=0.004350
+[sky stage] Epoch 4 Iter 750/800 loss_sky=0.000014
+[Epoch 4] ✅ Validation done: loss=0.058701, IoU=0.8814
+[Rank 0] 💾 Saved model to ./ckpts/pi3_sky_best_1.safetensors
+[sky stage] Epoch 5 Iter 0/800 loss_sky=0.000206
+[sky stage] Epoch 5 Iter 1/800 loss_sky=0.003432
+[sky stage] Epoch 5 Iter 50/800 loss_sky=0.003854
+[sky stage] Epoch 5 Iter 100/800 loss_sky=0.000435
+[sky stage] Epoch 5 Iter 150/800 loss_sky=0.000039
+[sky stage] Epoch 5 Iter 200/800 loss_sky=0.002154
+[sky stage] Epoch 5 Iter 250/800 loss_sky=0.001106
+[sky stage] Epoch 5 Iter 300/800 loss_sky=0.001264
+[sky stage] Epoch 5 Iter 350/800 loss_sky=0.000508
+[sky stage] Epoch 5 Iter 400/800 loss_sky=0.003752
+[sky stage] Epoch 5 Iter 450/800 loss_sky=0.005959
+[sky stage] Epoch 5 Iter 500/800 loss_sky=0.002737
+[sky stage] Epoch 5 Iter 550/800 loss_sky=0.000836
+[sky stage] Epoch 5 Iter 600/800 loss_sky=0.000579
+[sky stage] Epoch 5 Iter 650/800 loss_sky=0.002961
+[sky stage] Epoch 5 Iter 700/800 loss_sky=0.000979
+[sky stage] Epoch 5 Iter 750/800 loss_sky=0.000657
+[Epoch 5] ✅ Validation done: loss=0.071647, IoU=0.8451
+[Rank 0] 💾 Saved model to ./ckpts/pi3_sky_best_1.safetensors
+[sky stage] Epoch 6 Iter 0/800 loss_sky=0.001428
+[sky stage] Epoch 6 Iter 1/800 loss_sky=0.001350
+[sky stage] Epoch 6 Iter 50/800 loss_sky=0.001441
+[sky stage] Epoch 6 Iter 100/800 loss_sky=0.000286
+[sky stage] Epoch 6 Iter 150/800 loss_sky=0.000271
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x74ddb17ebb50>
+Traceback (most recent call last):
+  File "/home/liuwei/anaconda3/envs/pi3-liuwei/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1604, in __del__
+    self._shutdown_workers()
+  File "/home/liuwei/anaconda3/envs/pi3-liuwei/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1568, in _shutdown_workers
+    w.join(timeout=_utils.MP_STATUS_CHECK_INTERVAL)
+  File "/home/liuwei/anaconda3/envs/pi3-liuwei/lib/python3.10/multiprocessing/process.py", line 149, in join
+    res = self._popen.wait(timeout)
+  File "/home/liuwei/anaconda3/envs/pi3-liuwei/lib/python3.10/multiprocessing/popen_fork.py", line 40, in wait
+    if not wait([self.sentinel], timeout):
+  File "/home/liuwei/anaconda3/envs/pi3-liuwei/lib/python3.10/multiprocessing/connection.py", line 931, in wait
+    ready = selector.select(timeout)
+  File "/home/liuwei/anaconda3/envs/pi3-liuwei/lib/python3.10/selectors.py", line 416, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt:

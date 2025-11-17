@@ -1,0 +1,1 @@
+{"_step":89,"step":3950,"train/loss_sky":1.314962645437845e-07,"val/iou":0.8288345336914062,"val/loss":2.8088786621083273e-06,"_runtime":465,"_timestamp":1.7629411757697122e+09,"epoch":5,"_wandb":{"runtime":465}}
