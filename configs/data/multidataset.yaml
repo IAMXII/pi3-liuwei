@@ -1,0 +1,11 @@
+_target_: training.data.multidataset_module.MultiDatasetModule
+
+roots:
+  - data/processed_wildrgbd
+  - data/processed_datasetA
+  - data/processed_datasetB
+
+split: train
+batch_size: 4
+num_views: 4
+num_workers: 8
