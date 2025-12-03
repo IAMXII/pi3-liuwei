@@ -116,7 +116,7 @@ def predictions_to_glb(
     # Initialize a 3D scene
     scene_3d = trimesh.Scene()
 
-    # Add point cloud data to the scene
+    # Add point cloud dataset to the scene
     point_cloud_data = trimesh.PointCloud(vertices=vertices_3d, colors=colors_rgb)
 
     scene_3d.add_geometry(point_cloud_data)
@@ -750,7 +750,7 @@ if __name__ == '__main__':
                 <a class="themed-link" href="#">🚀 Project Page</a>
             </p>
             
-            <p>Transform your videos or image collections into detailed 3D models. The <strong class="pi-symbol">&pi;³</strong> model processes your visual data to generate a rich 3D point cloud and calculate the corresponding camera perspectives.</p>
+            <p>Transform your videos or image collections into detailed 3D models. The <strong class="pi-symbol">&pi;³</strong> model processes your visual dataset to generate a rich 3D point cloud and calculate the corresponding camera perspectives.</p>
             
             <h3>How to Use:</h3>
             <ol>

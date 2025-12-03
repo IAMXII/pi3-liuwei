@@ -451,7 +451,7 @@ def readNerfSyntheticInfo(path, white_background, eval, extension=".png", num_pt
 
     ply_path = os.path.join(path, "points3d.ply")
     if not os.path.exists(ply_path):
-        # Since this data set has no colmap data, we start with random points
+        # Since this dataset set has no colmap dataset, we start with random points
         print(f"Generating random point cloud ({num_pts})...")
         
         # We create random points inside the bounds of the synthetic Blender scenes
@@ -603,7 +603,7 @@ def readIphoneSceneInfo(path, white_background, eval, extension=".png", num_pts=
 
     ply_path = os.path.join(path, "points3d.ply")
     if not os.path.exists(ply_path):
-        # Since this data set has no colmap data, we start with random points
+        # Since this dataset set has no colmap dataset, we start with random points
         print(f"Generating random point cloud ({num_pts})...")
         
         # We create random points inside the bounds of the synthetic Blender scenes

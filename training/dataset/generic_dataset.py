@@ -8,15 +8,13 @@ from training.utils.image import imread_cv2
 
 
 class WildGenericDataset(Dataset):
-    """
-    通用版：支持任意 processed_xxx 数据集，只要目录结构一致即可
-    """
+    def __init__(self, root, split="train", num_views=3,
+                 transform=None):
 
-    def __init__(self, root, split="train", num_views=3, max_interval=4):
         self.root = root
         self.split = split
         self.num_views = num_views
-        self.max_interval = max_interval
+        self.transform = transform
 
         # load split json
         split_file = osp.join(root, f"selected_seqs_{split}.json")
@@ -49,13 +47,15 @@ class WildGenericDataset(Dataset):
 
 
     def _load_frame(self, frame_id):
-        # frame_id:  "category/seq_0001/00010"
         seq_dir, frame = osp.split(frame_id)
         p = osp.join(self.root, seq_dir)
 
         rgb = imread_cv2(osp.join(p, "rgb", frame + ".jpg"))
         depth = cv2.imread(osp.join(p, "depth", frame + ".png"), -1)
         mask = cv2.imread(osp.join(p, "masks", frame + ".png"), -1)
+
+        if self.transform is not None:
+            rgb, depth, mask = self.transform(rgb, depth, mask)
 
         meta = np.load(osp.join(p, "metadata", frame + ".npz"))
         intr = meta["intrinsics"].astype(np.float32)

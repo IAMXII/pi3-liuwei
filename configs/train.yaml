@@ -1,0 +1,18 @@
+defaults:
+  - _self_
+  - data: multidataset
+  - model: pi3
+  - trainer: default
+  - paths: default
+seed: 42
+
+#dataset:
+#  _target_: training.dataset.multidataset_module.MultiDatasetModule
+#  roots:
+#    - dataset/processed_wildrgbd
+#    - dataset/processed_midair
+#    - dataset/processed_sceneflow
+#  split: train
+#  num_views: 4
+#  batch_size: 4
+#  num_workers: 8

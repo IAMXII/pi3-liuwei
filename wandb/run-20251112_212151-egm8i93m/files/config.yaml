@@ -6,7 +6,7 @@ _wandb:
                 args:
                     - --gpus
                     - "4"
-                    - --data-path
+                    - --dataset-path
                     - /home/liuwei/mnt/instant_vggt_dataset/mask_train
                     - --save-dir
                     - ./ckpts

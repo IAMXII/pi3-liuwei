@@ -8,7 +8,7 @@ from torchvision import transforms
 from plyfile import PlyData, PlyElement
 import numpy as np
 
-def load_images_as_tensor(path='data/truck', interval=1, PIXEL_LIMIT=255000):
+def load_images_as_tensor(path='dataset/truck', interval=1, PIXEL_LIMIT=255000):
     """
     Loads images from a directory or video, resizes them to a uniform size,
     then converts and stacks them into a single [N, 3, H, W] PyTorch tensor.

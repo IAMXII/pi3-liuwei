@@ -196,7 +196,8 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
 
         return torch.cat([final_output[0], final_output[1]], dim=-1), pos.reshape(B*N, hw, -1)
     
-    def forward(self, imgs, train_sky=False):
+    def forward(self, views, train_sky=False):
+        imgs = views['img']
         imgs = (imgs - self.image_mean) / self.image_std
 
         B, N, _, H, W = imgs.shape

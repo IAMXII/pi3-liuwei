@@ -1,0 +1,21 @@
+_target_: lightning.pytorch.trainer.Trainer
+default_root_dir: ${paths.log_dir}
+check_val_every_n_epoch: null
+val_check_interval: 1000
+deterministic: False
+accelerator: gpu
+num_nodes: 1
+sync_batchnorm: true
+devices: auto
+max_epochs: 160
+max_steps: 100000
+num_sanity_val_steps: 8
+strategy:
+  _target_: lightning.pytorch.strategies.DDPStrategy
+  timeout:
+    _target_: datetime.timedelta
+    minutes: 60000
+  find_unused_parameters: true
+use_distributed_sampler: false
+precision: bf16
+log_every_n_steps: 10

@@ -1,0 +1,12 @@
+_target_: training.pi3_module.Pi3LightningModule
+
+stage1_epochs: 80
+stage2_epochs: 80
+iters_per_epoch: 800
+
+lr_encoder: 5e-6
+lr_rest: 5e-5
+
+grad_clip: 1.0
+train_sky: false
+pretrained_vggt_checkpoint: ./ckpts/model.safetensors

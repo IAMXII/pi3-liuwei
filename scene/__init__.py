@@ -57,13 +57,13 @@ class Scene:
         if os.path.exists(os.path.join(args.source_path, "sparse")):
             scene_info = sceneLoadTypeCallbacks["Colmap"](args.source_path, args.images, args.eval, num_pts_ratio=num_pts_ratio)
         elif os.path.exists(os.path.join(args.source_path, "filtered_cvd.npz")):
-            print("Found filter.npz file, assuming Mega Sam data set!")
+            print("Found filter.npz file, assuming Mega Sam dataset set!")
             scene_info = sceneLoadTypeCallbacks["MegaSam"](args.source_path, args.white_background, args.eval, num_pts=num_pts, time_duration=time_duration, extension=args.extension, num_extra_pts=args.num_extra_pts, frame_ratio=args.frame_ratio, dataloader=args.dataloader)
         elif os.path.exists(os.path.join(args.source_path, "points3d.ply")):
-            print("Found points_3d.ply file, assuming Cuter data set!")
+            print("Found points_3d.ply file, assuming Cuter dataset set!")
             scene_info = sceneLoadTypeCallbacks["Cuter"](args.source_path, args.white_background, args.eval, num_pts=num_pts, time_duration=time_duration, extension=args.extension, num_extra_pts=args.num_extra_pts, frame_ratio=args.frame_ratio, dataloader=args.dataloader)
         elif os.path.exists(os.path.join(args.source_path, "transforms_train.json")):
-            print("Found transforms_train.json file, assuming Blender data set!")
+            print("Found transforms_train.json file, assuming Blender dataset set!")
             scene_info = sceneLoadTypeCallbacks["Blender"](args.source_path, args.white_background, args.eval, num_pts=num_pts, time_duration=time_duration, extension=args.extension, num_extra_pts=args.num_extra_pts, frame_ratio=args.frame_ratio, dataloader=args.dataloader)
         else:
             print(f"------args.source_path: {args.source_path}")

@@ -43,7 +43,7 @@ if __name__ == '__main__':
         model = Pi3.from_pretrained("yyfz233/Pi3").to(device).eval()
         # or download checkpoints from `https://huggingface.co/yyfz233/Pi3/resolve/main/model.safetensors`, and `--ckpt ckpts/model.safetensors`
 
-    # 2. Prepare input data
+    # 2. Prepare input dataset
     # The load_images_as_tensor function will print the loading path
     imgs = load_images_as_tensor(args.data_path, interval=args.interval).to(device) # (N, 3, H, W)
 

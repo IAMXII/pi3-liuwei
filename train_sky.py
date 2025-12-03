@@ -9,7 +9,7 @@
 # import torch.nn.functional as F
 # import torch.distributed as dist
 # import torch.multiprocessing as mp
-# from torch.utils.data import DataLoader, DistributedSampler
+# from torch.utils.dataset import DataLoader, DistributedSampler
 # from torch.nn.parallel import DistributedDataParallel as DDP
 # from torch.optim.lr_scheduler import OneCycleLR
 # from lpips import LPIPS
@@ -280,7 +280,7 @@
 #     parser = argparse.ArgumentParser()
 #     parser.add_argument("--gpus", type=int, default=None,
 #                         help="Number of GPUs to use on this machine. Default: auto-detect")
-#     parser.add_argument("--data-path", type=str, required=True, help="Path to dataset")
+#     parser.add_argument("--dataset-path", type=str, required=True, help="Path to dataset")
 #     parser.add_argument("--save-dir", type=str, required=True, help="Where to save checkpoints")
 #     parser.add_argument("--interval", type=int, default=1, help="Dataset interval option")
 #     parser.add_argument("--amp", type=lambda x: (str(x).lower() == 'true'), default=True, help="Use AMP (True/False)")
@@ -599,7 +599,7 @@ def train_worker(local_rank, world_size, args):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--gpus", type=int, default=None)
-    parser.add_argument("--data-path", type=str, required=True)
+    parser.add_argument("--dataset-path", type=str, required=True)
     parser.add_argument("--save-dir", type=str, required=True)
     parser.add_argument("--interval", type=int, default=1)
     parser.add_argument("--amp", type=lambda x: (str(x).lower() == 'true'), default=True)

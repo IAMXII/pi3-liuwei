@@ -119,12 +119,12 @@ def read_iphone_scene(dir, scene_name):
         
         
     
-# data_dir = "/data/guest_storage/zhanpengluo/Dataset/dynamic_reconstruction/iphone"
+# data_dir = "/dataset/guest_storage/zhanpengluo/Dataset/dynamic_reconstruction/iphone"
 # scene_name ="apple"
 # read_iphone_scene(data_dir, scene_name)
     
     
-npy_file = "/data/guest_storage/zhanpengluo/Dataset/dynamic_reconstruction/iphone/apple/points-before.npy"
+npy_file = "/dataset/guest_storage/zhanpengluo/Dataset/dynamic_reconstruction/iphone/apple/points-before.npy"
 points = np.load(npy_file)
 print(points.shape)
     

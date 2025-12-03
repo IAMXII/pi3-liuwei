@@ -156,8 +156,8 @@ def compute_losses(res, gt, device):
     losses = {}
     lpips_loss_fn = LPIPS(net='vgg').to(device)
     if 'gaussians' in res:
-        height = gt['image'].shape[-2]
-        width = gt['image'].shape[-1]
+        height = gt['img'].shape[-2]
+        width = gt['img'].shape[-1]
         B, C, _ = res['camera_poses'].shape
         N = res['gaussians']['center'].shape[1]
         viewmats = res['camera_poses']
@@ -187,7 +187,7 @@ def compute_losses(res, gt, device):
 
         render_colors = render_colors[..., :3]
         render_depths = render_colors[..., 3:]
-        losses['rgb_loss'] = F.l1_loss(render_colors, gt['image'])
+        losses['rgb_loss'] = F.l1_loss(render_colors, gt['img'])
         render_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
         gt_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
 
@@ -195,7 +195,7 @@ def compute_losses(res, gt, device):
         lpips_val = lpips_loss_fn(render_norm, gt_norm)
         losses['lpips_loss'] = LAMBDA_LPIPS * lpips_val.mean()
         mask = gt['depth'] > 0
-        losses['geometry_loss'] = geometry_loss(render_depths, gt['depth'])
+        losses['geometry_loss'] = geometry_loss(render_depths, gt['depthmap'])
 
     total = sum(v for k, v in losses.items())
     losses['total_loss'] = total

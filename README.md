@@ -81,7 +81,7 @@ If the automatic download from Hugging Face is slow, you can download the model 
 # Run with default example video
 python example.py
 
-# Run on your own data (image folder or .mp4 file)
+# Run on your own dataset (image folder or .mp4 file)
 python example.py --data_path <path/to/your/images_dir_or_video.mp4>
 ```
 
@@ -137,7 +137,7 @@ model = Pi3.from_pretrained("yyfz233/Pi3").to(device).eval()
 # Load a sequence of N images into a tensor
 # imgs shape: (N, 3, H, W).
 # imgs value: [0, 1]
-imgs = load_images_as_tensor('path/to/your/data', interval=10).to(device)
+imgs = load_images_as_tensor('path/to/your/dataset', interval=10).to(device)
 
 # --- Inference ---
 print("Running model inference...")

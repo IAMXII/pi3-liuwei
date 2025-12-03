@@ -70,7 +70,7 @@ except Exception as e:
 #             return self._len
 #
 #         def __getitem__(self, idx):
-#             # return fake data - in practice you must use real dataset
+#             # return fake dataset - in practice you must use real dataset
 #             img = torch.randn(3, self.out_size[0], self.out_size[1])
 #             # gt must be a dict with appropriate tensors used by compute_losses
 #             gt = {
