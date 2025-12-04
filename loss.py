@@ -152,26 +152,86 @@ def compute_loss_sky(res, gt):
 
 
 # ---------- 损失函数 ----------
+# def compute_losses(res, gt, device):
+#     losses = {}
+#     lpips_loss_fn = LPIPS(net='vgg').to(device)
+#     if 'gaussians' in res:
+#         height = gt['image'].shape[-2]
+#         width = gt['image'].shape[-1]
+#         B, C, _ = res['camera_poses'].shape
+#         N = res['gaussians']['center'].shape[1]
+#         viewmats = res['camera_poses']
+#         Ks = torch.tensor([[[1., 0., 0.],
+#                             [0., 1., 0.],
+#                             [0., 0., 1.]]],
+#                           device=device).repeat(B, C, 1, 1)
+#         means = res['gaussians']['center']
+#         quats = res['gaussians']['quat']
+#         scales = res['gaussians']['scale']
+#         colors = res['gaussians']['color']
+#         opacities = res['gaussians']['opac']
+#         render_mode = "RGB+ED"
+#
+#         render_colors, render_alphas, meta = rasterization(
+#             means=means,
+#             quats=quats,
+#             scales=scales,
+#             opacities=opacities,
+#             colors=colors,
+#             viewmats=viewmats,
+#             Ks=Ks,
+#             width=width,
+#             height=height,
+#             render_mode=render_mode
+#         )
+#
+#         render_colors = render_colors[..., :3]
+#         render_depths = render_colors[..., 3:]
+#         losses['rgb_loss'] = F.l1_loss(render_colors, gt['image'])
+#         render_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
+#         gt_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
+#
+#         # 2. 计算 LPIPS（返回的是每个样本的平均值）
+#         lpips_val = lpips_loss_fn(render_norm, gt_norm)
+#         losses['lpips_loss'] = LAMBDA_LPIPS * lpips_val.mean()
+#         mask = gt['depth'] > 0
+#         losses['geometry_loss'] = geometry_loss(render_depths, gt['depth'])
+#
+#     total = sum(v for k, v in losses.items())
+#     losses['total_loss'] = total
+#     return losses
+
 def compute_losses(res, gt, device):
     losses = {}
     lpips_loss_fn = LPIPS(net='vgg').to(device)
+
     if 'gaussians' in res:
-        height = gt['img'].shape[-2]
-        width = gt['img'].shape[-1]
+
+        # -------------------------------------------------
+        #   统一输入格式: gt['image'], gt['depth']
+        # -------------------------------------------------
+        height = gt['image'].shape[-2]
+        width  = gt['image'].shape[-1]
+
+        # ============ 相机数据 ===============
         B, C, _ = res['camera_poses'].shape
-        N = res['gaussians']['center'].shape[1]
         viewmats = res['camera_poses']
+
         Ks = torch.tensor([[[1., 0., 0.],
                             [0., 1., 0.],
                             [0., 0., 1.]]],
                           device=device).repeat(B, C, 1, 1)
-        means = res['gaussians']['center']
-        quats = res['gaussians']['quat']
-        scales = res['gaussians']['scale']
-        colors = res['gaussians']['color']
-        opacities = res['gaussians']['opac']
-        render_mode = "RGB+ED"
 
+        # ============ Gaussian 参数 ===========
+        gauss = res["gaussians_all"]
+
+        means     = gauss['center']
+        quats     = gauss['quat']
+        scales    = gauss['scale']
+        colors    = gauss['color']
+        opacities = gauss['opac']
+
+        # ============ 渲染 ===================
         render_colors, render_alphas, meta = rasterization(
             means=means,
             quats=quats,
@@ -182,21 +242,49 @@ def compute_losses(res, gt, device):
             Ks=Ks,
             width=width,
             height=height,
-            render_mode=render_mode
+            render_mode="RGB+ED"
         )
 
         render_colors = render_colors[..., :3]
         render_depths = render_colors[..., 3:]
-        losses['rgb_loss'] = F.l1_loss(render_colors, gt['img'])
-        render_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
-        gt_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1  # [B, 3, H, W]
 
-        # 2. 计算 LPIPS（返回的是每个样本的平均值）
+        # ============ RGB loss ===============
+        losses['rgb_loss'] = F.l1_loss(render_colors, gt['image'])
+
+        # ============ LPIPS loss =============
+        render_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1
+        gt_norm     = gt['image'].permute(0, 3, 1, 2) * 2 - 1
+
         lpips_val = lpips_loss_fn(render_norm, gt_norm)
         losses['lpips_loss'] = LAMBDA_LPIPS * lpips_val.mean()
-        mask = gt['depth'] > 0
+
+        # ============ depth loss =============
         losses['geometry_loss'] = geometry_loss(render_depths, gt['depthmap'])
 
-    total = sum(v for k, v in losses.items())
-    losses['total_loss'] = total
+        # -----------------------------------------------------------
+        #      Sky Gaussian 半球约束（不直接修改 res 中的 center）
+        # -----------------------------------------------------------
+        center_scene = res["gaussians"]["center"]         # (B, Ns, 3)
+        center_sky   = res["gaussians_sky"]["center"]     # (B, Nk, 3)
+
+        scene_center = center_scene.mean(dim=1, keepdim=True)   # (B,1,3)
+
+        scene_radius = torch.norm(center_scene - scene_center, dim=-1).max(dim=1, keepdim=True)[0]
+        R = scene_radius * 10.0
+
+        v = center_sky - scene_center
+        dist = torch.norm(v, dim=-1, keepdim=True)
+        v = v / (dist + 1e-8) * R
+        v[..., 1] = torch.minimum(v[..., 1], torch.zeros_like(v[..., 1]))
+        center_sky_fixed = scene_center + v
+
+        # sky constraint loss
+        dist_loss = F.relu(torch.norm(center_sky_fixed - scene_center, dim=-1) - R)
+        hemi_loss = F.relu(center_sky_fixed[..., 1])
+        losses["sky_constraint"] = dist_loss.mean() + hemi_loss.mean()
+
+    # ----------------------
+    # Total loss
+    # ----------------------
+    losses['total_loss'] = sum(losses.values())
     return losses
