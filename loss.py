@@ -201,90 +201,207 @@ def compute_loss_sky(res, gt):
 #     losses['total_loss'] = total
 #     return losses
 
-def compute_losses(res, gt, device):
+#################### liuwei
+def compute_losses(
+    res,
+    gt,
+    device,
+    pose_only: bool = False,
+    pose_weight: float = 1.0,
+):
     losses = {}
+
+    # ==========================================================
+    #  Camera pose decomposition
+    # ==========================================================
+    viewmats = res['camera_poses']          # (B, N, 4, 4)
+    B, N, _, _ = viewmats.shape
+
+    R_pred = viewmats[..., :3, :3]
+    t_pred = viewmats[..., :3, 3]
+
+    t_pred_norm = torch.norm(t_pred, dim=-1, keepdim=True) + 1e-6
+    t_pred_dir  = t_pred / t_pred_norm
+
+    # --------------------------
+    #  GT pose
+    # --------------------------
+    gt_pose = gt['camera_poses']
+    R_gt = gt_pose[..., :3, :3]
+    t_gt = gt_pose[..., :3, 3]
+
+    t_gt_norm = torch.norm(t_gt, dim=-1, keepdim=True) + 1e-6
+    t_gt_dir  = t_gt / t_gt_norm
+
+    # ==========================================================
+    #  SO(3) geodesic distance
+    # ==========================================================
+    def so3_geodesic(R1, R2):
+        R = torch.matmul(R1.transpose(-1, -2), R2)
+        trace = torch.diagonal(R, dim1=-2, dim2=-1).sum(-1)
+        cos = (trace - 1.0) / 2.0
+        cos = torch.clamp(cos, -1 + 1e-6, 1 - 1e-6)
+        return torch.acos(cos)
+
+    # ==========================================================
+    #  Pose losses (π³-style)
+    # ==========================================================
+    # --- rotation ---
+    rot_loss = so3_geodesic(R_pred, R_gt).mean()
+    losses['pose_rot_loss'] = LAMBDA_ROT * rot_loss * pose_weight
+
+    # --- translation direction ---
+    dir_loss = torch.norm(t_pred_dir - t_gt_dir, dim=-1).mean()
+    losses['pose_dir_loss'] = LAMBDA_DIR * dir_loss * pose_weight
+
+    # ----------------------------------------------------------
+    #  π³-style O(N) global scale estimation
+    # ----------------------------------------------------------
+    # 去中心
+    t_pred_c = t_pred - t_pred.mean(dim=1, keepdim=True)
+    t_gt_c   = t_gt   - t_gt.mean(dim=1, keepdim=True)
+
+    # 二阶矩（RMS radius）
+    pred_var = (t_pred_c ** 2).sum(dim=-1).mean(dim=1)   # (B,)
+    gt_var   = (t_gt_c   ** 2).sum(dim=-1).mean(dim=1)   # (B,)
+
+    scale = torch.sqrt(gt_var / (pred_var + 1e-8))       # (B,)
+
+    # --- absolute scale supervision (Huber, π³) ---
+    scale_loss = F.huber_loss(
+        scale,
+        torch.ones_like(scale),
+        delta=0.5
+    )
+    losses['pose_scale_loss'] = LAMBDA_SCALE * scale_loss.mean() * pose_weight
+
+    # --- scale-aligned translation loss ---
+    t_pred_scaled = t_pred * scale[:, None, None]
+
+    trans_loss = F.smooth_l1_loss(
+        t_pred_scaled,
+        t_gt
+    )
+    losses['pose_trans_loss'] = LAMBDA_TRANS * trans_loss * pose_weight
+
+    # ==========================================================
+    #  Pose-only stage
+    # ==========================================================
+    if pose_only:
+        losses['total_loss'] = sum(losses.values())
+        return losses
+
+    # ==========================================================
+    #  Below: full Gaussian + rendering losses
+    # ==========================================================
     lpips_loss_fn = LPIPS(net='vgg').to(device)
 
-    if 'gaussians' in res:
+    height = gt['img'].shape[-2]
+    width  = gt['img'].shape[-1]
+    Ks = gt['camera_intrs']
 
-        # -------------------------------------------------
-        #   统一输入格式: gt['image'], gt['depth']
-        # -------------------------------------------------
-        height = gt['image'].shape[-2]
-        width  = gt['image'].shape[-1]
+    # ==========================================================
+    #  Gaussian data
+    # ==========================================================
+    gauss = res["gaussians_all"]
 
-        # ============ 相机数据 ===============
-        B, C, _ = res['camera_poses'].shape
-        viewmats = res['camera_poses']
+    means     = gauss['center']
+    quats     = gauss['quat']
+    scales_g  = gauss['scale']
+    colors    = gauss['color']
+    opacities = gauss['opacity']
 
-        Ks = torch.tensor([[[1., 0., 0.],
-                            [0., 1., 0.],
-                            [0., 0., 1.]]],
-                          device=device).repeat(B, C, 1, 1)
+    s_fg  = gauss['s_fg']
+    s_sky = gauss['s_sky']
+    s_dyn = gauss['s_dyn']
 
-        # ============ Gaussian 参数 ===========
-        gauss = res["gaussians_all"]
+    # ==========================================================
+    #  Rendering
+    # ==========================================================
+    render_out, render_alpha, _ = rasterization(
+        means=means,
+        quats=quats,
+        scales=scales_g,
+        opacities=opacities,
+        colors=colors,
+        viewmats=viewmats,
+        Ks=Ks,
+        width=width,
+        height=height,
+        render_mode="RGB+ED"
+    )
 
-        means     = gauss['center']
-        quats     = gauss['quat']
-        scales    = gauss['scale']
-        colors    = gauss['color']
-        opacities = gauss['opac']
+    render_rgb   = render_out[..., :3]
+    render_depth = render_out[..., 3]
 
-        # ============ 渲染 ===================
-        render_colors, render_alphas, meta = rasterization(
-            means=means,
-            quats=quats,
-            scales=scales,
-            opacities=opacities,
-            colors=colors,
-            viewmats=viewmats,
-            Ks=Ks,
-            width=width,
-            height=height,
-            render_mode="RGB+ED"
-        )
+    # ==========================================================
+    #  RGB + LPIPS
+    # ==========================================================
+    losses['rgb_loss'] = LAMBDA_RGB * F.l1_loss(render_rgb, gt['img'])
 
-        render_colors = render_colors[..., :3]
-        render_depths = render_colors[..., 3:]
+    render_norm = (
+        render_rgb.permute(0, 1, 4, 2, 3)
+        .reshape(-1, 3, height, width) * 2 - 1
+    )
+    gt_norm = (
+        gt['img'].permute(0, 1, 4, 2, 3)
+        .reshape(-1, 3, height, width) * 2 - 1
+    )
 
-        # ============ RGB loss ===============
-        losses['rgb_loss'] = F.l1_loss(render_colors, gt['image'])
+    lpips_val = lpips_loss_fn(render_norm, gt_norm)
+    losses['lpips_loss'] = LAMBDA_LPIPS * lpips_val.mean()
 
-        # ============ LPIPS loss =============
-        render_norm = render_colors.permute(0, 3, 1, 2) * 2 - 1
-        gt_norm     = gt['image'].permute(0, 3, 1, 2) * 2 - 1
+    # ==========================================================
+    #  Geometry (depth)
+    # ==========================================================
+    fg_weight = torch.clamp(
+        render_alpha * s_fg.mean(dim=1, keepdim=True),
+        0.0, 1.0
+    )
 
-        lpips_val = lpips_loss_fn(render_norm, gt_norm)
-        losses['lpips_loss'] = LAMBDA_LPIPS * lpips_val.mean()
+    geom_loss, _ = geometry_loss(
+        render_depth.view(-1, height, width),
+        gt['depthmap'].view(-1, height, width),
+        mask=(fg_weight.view(-1, height, width) > 0.1)
+    )
+    losses['geometry_loss'] = LAMBDA_DEPTH * geom_loss
 
-        # ============ depth loss =============
-        losses['geometry_loss'] = geometry_loss(render_depths, gt['depthmap'])
+    # ==========================================================
+    #  Sky + dynamic
+    # ==========================================================
+    scene_center = means.mean(dim=1, keepdim=True)
+    scene_radius = torch.norm(
+        means - scene_center, dim=-1
+    ).max(dim=1, keepdim=True)[0]
 
-        # -----------------------------------------------------------
-        #      Sky Gaussian 半球约束（不直接修改 res 中的 center）
-        # -----------------------------------------------------------
-        center_scene = res["gaussians"]["center"]         # (B, Ns, 3)
-        center_sky   = res["gaussians_sky"]["center"]     # (B, Nk, 3)
+    R_sky = scene_radius * 10.0
+    v = means - scene_center
+    dist = torch.norm(v, dim=-1, keepdim=True)
+    v_dir = v / (dist + 1e-6)
+    target_pos = scene_center + v_dir * R_sky
 
-        scene_center = center_scene.mean(dim=1, keepdim=True)   # (B,1,3)
+    losses['sky_loss'] = (
+        (s_sky * F.relu(dist - R_sky)).mean() +
+        (s_sky * F.relu(target_pos[..., 1:2])).mean()
+    )
 
-        scene_radius = torch.norm(center_scene - scene_center, dim=-1).max(dim=1, keepdim=True)[0]
-        R = scene_radius * 10.0
+    sky_weight = torch.clamp(
+        render_alpha * s_sky.mean(dim=1, keepdim=True),
+        0.0, 1.0
+    )
 
-        v = center_sky - scene_center
-        dist = torch.norm(v, dim=-1, keepdim=True)
-        v = v / (dist + 1e-8) * R
-        v[..., 1] = torch.minimum(v[..., 1], torch.zeros_like(v[..., 1]))
-        center_sky_fixed = scene_center + v
+    sky_rgb = render_rgb * sky_weight.unsqueeze(-1)
+    sky_rgb_mean = sky_rgb.mean(dim=1, keepdim=True)
+    losses['sky_view_loss'] = ((sky_rgb - sky_rgb_mean) ** 2).mean()
 
-        # sky constraint loss
-        dist_loss = F.relu(torch.norm(center_sky_fixed - scene_center, dim=-1) - R)
-        hemi_loss = F.relu(center_sky_fixed[..., 1])
-        losses["sky_constraint"] = dist_loss.mean() + hemi_loss.mean()
+    sky_depth = render_depth * sky_weight
+    sky_depth_mean = sky_depth.mean(dim=1, keepdim=True)
+    losses['sky_depth_loss'] = 0.1 * ((sky_depth - sky_depth_mean) ** 2).mean()
 
-    # ----------------------
-    # Total loss
-    # ----------------------
+    losses['dynamic_loss'] = (s_dyn * opacities).mean()
+
+    # ==========================================================
+    #  Total
+    # ==========================================================
     losses['total_loss'] = sum(losses.values())
     return losses

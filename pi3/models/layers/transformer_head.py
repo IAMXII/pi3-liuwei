@@ -85,21 +85,54 @@ class GaussianExpander(nn.Module):
     def __init__(self, dim_token, K=16):
         super().__init__()
         self.K = K
-        self.fc_center = nn.Linear(dim_token, 3*K)
-        self.fc_scale  = nn.Linear(dim_token, 3*K)
-        self.fc_quat   = nn.Linear(dim_token, 4*K)
-        self.fc_color  = nn.Linear(dim_token, 3*K)
-        self.fc_opac   = nn.Linear(dim_token, 1*K)
+
+        self.fc_center = nn.Linear(dim_token, 3 * K)
+        self.fc_scale  = nn.Linear(dim_token, 3 * K)
+        self.fc_quat   = nn.Linear(dim_token, 4 * K)
+        self.fc_color  = nn.Linear(dim_token, 3 * K)
+        self.fc_opac   = nn.Linear(dim_token, 1 * K)
+
+        # NEW: semantic gates
+        self.fc_gate   = nn.Linear(dim_token, 3 * K)  # fg / sky / dyn
 
     def forward(self, tokens):
         B, N, D = tokens.shape
         K = self.K
 
-        center = torch.exp(self.fc_center(tokens).reshape(B, N*K, 3))
-        scale  = torch.exp(self.fc_scale(tokens).reshape(B, N*K, 3))
-        quat   = self.fc_quat(tokens).reshape(B, N*K, 4)
-        quat   = quat / (torch.norm(quat, dim=-1, keepdim=True) + 1e-8)
-        color  = torch.sigmoid(self.fc_color(tokens).reshape(B, N*K, 3))
-        opac   = torch.sigmoid(self.fc_opac(tokens).reshape(B, N*K, 1))
+        center = torch.exp(
+            self.fc_center(tokens).reshape(B, N * K, 3)
+        )
 
-        return dict(center=center, scale=scale, quat=quat, color=color, opacity=opac)
+        scale = torch.exp(
+            self.fc_scale(tokens).reshape(B, N * K, 3)
+        )
+
+        quat = self.fc_quat(tokens).reshape(B, N * K, 4)
+        quat = quat / (torch.norm(quat, dim=-1, keepdim=True) + 1e-8)
+
+        color = torch.sigmoid(
+            self.fc_color(tokens).reshape(B, N * K, 3)
+        )
+
+        opacity = torch.sigmoid(
+            self.fc_opac(tokens).reshape(B, N * K, 1)
+        )
+
+        # -------- semantic gates --------
+        gate_logits = self.fc_gate(tokens).reshape(B, N * K, 3)
+        gate = torch.softmax(gate_logits, dim=-1)
+
+        s_fg  = gate[..., 0:1]
+        s_sky = gate[..., 1:2]
+        s_dyn = gate[..., 2:3]
+
+        return dict(
+            center=center,
+            scale=scale,
+            quat=quat,
+            color=color,
+            opacity=opacity,
+            s_fg=s_fg,
+            s_sky=s_sky,
+            s_dyn=s_dyn,
+        )

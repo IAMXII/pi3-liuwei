@@ -29,65 +29,114 @@ class ResConvBlock(nn.Module):
         res = self.head_skip(res) + x
         return res
 
+
 class CameraHead(nn.Module):
+    """
+    Camera Head predicting 6D Rotation and standard 3D Translation (T).
+
+    Changes:
+    1. Rotation: Replaced 9D + SVD with 6D continuous rotation representation.
+    2. Translation: Reverted to predicting standard 3D translation (T) without
+       explicit scale separation (as requested).
+    """
+
     def __init__(self, dim=512):
         super().__init__()
         output_dim = dim
-        self.res_conv = nn.ModuleList([deepcopy(ResConvBlock(output_dim, output_dim)) 
-                for _ in range(2)])
+        # 使用深拷贝确保 ResConvBlock 实例独立
+        self.res_conv = nn.ModuleList([deepcopy(ResConvBlock(output_dim, output_dim))
+                                       for _ in range(2)])
+
+        # Global Average Pooling to reduce feature dimension
         self.avgpool = nn.AdaptiveAvgPool2d(1)
+
+        # Shared MLPs
         self.more_mlps = nn.Sequential(
-            nn.Linear(output_dim,output_dim),
+            nn.Linear(output_dim, output_dim),
             nn.ReLU(),
-            nn.Linear(output_dim,output_dim),
+            nn.Linear(output_dim, output_dim),
             nn.ReLU()
-            )
+        )
+
+        # --- V3 Prediction Heads (6D Rot + Standard T) ---
+        # 1. 6D Rotation (r1, r2 vectors)
+        self.fc_rot_6d = nn.Linear(output_dim, 6)
+        # 2. Standard 3D Translation (T)
         self.fc_t = nn.Linear(output_dim, 3)
-        self.fc_rot = nn.Linear(output_dim, 9)
 
-    def forward(self, feat, patch_h, patch_w):
-        BN, hw, c = feat.shape
+    # =========================================================================
+    # --- Utility Functions for 6D Rotation ---
+    # =========================================================================
+    @staticmethod
+    def _6d_to_matrix(d6: torch.Tensor) -> torch.Tensor:
+        """
+        Converts 6D continuous rotation representation to 3x3 rotation matrix.
+        (Based on Zhou et al., 2018: On the Continuity of Rotation Representations)
+        Input: [B, 6] tensor.
+        Output: [B, 3, 3] tensor.
+        """
+        a1, a2 = d6[..., :3], d6[..., 3:]
 
-        for i in range(2):
-            feat = self.res_conv[i](feat)
+        # Orthogonalize the first vector
+        b1 = F.normalize(a1, p=2, dim=-1)
 
-        # feat = self.avgpool(feat)
-        feat = self.avgpool(feat.permute(0, 2, 1).reshape(BN, -1, patch_h, patch_w).contiguous())              ##########
-        feat = feat.view(feat.size(0), -1)
+        # Get the second vector orthogonal to the first
+        b2 = a2 - (b1 * a2).sum(dim=-1, keepdim=True) * b1
+        b2 = F.normalize(b2, p=2, dim=-1)
 
-        feat = self.more_mlps(feat)  # [B, D_]
-        with torch.amp.autocast(device_type='cuda', enabled=False):
-            out_t = self.fc_t(feat.float())  # [B,3]
-            out_r = self.fc_rot(feat.float())  # [B,9]
-            pose = self.convert_pose_to_4x4(BN, out_r, out_t, feat.device)
+        # Get the third vector (cross product)
+        b3 = torch.cross(b1, b2, dim=-1)
 
-        return pose
+        # Stack them to form the rotation matrix [B, 3, 3]
+        return torch.stack((b1, b2, b3), dim=-1)
 
-    def convert_pose_to_4x4(self, B, out_r, out_t, device):
-        out_r = self.svd_orthogonalize(out_r)  # [N,3,3]
+    # =========================================================================
+    # --- Pose Construction ---
+    # =========================================================================
+    def convert_pose_to_4x4(self, B, out_r_mat, out_t, device):
+        """
+        Assembles the 4x4 homogenous pose matrix.
+        Args:
+            out_r_mat: [B, 3, 3] Rotation matrix.
+            out_t: [B, 3] Translation vector (full T with scale).
+        """
         pose = torch.zeros((B, 4, 4), device=device)
-        pose[:, :3, :3] = out_r
-        pose[:, :3, 3] = out_t
+        pose[:, :3, :3] = out_r_mat  # [B, 3, 3]
+        pose[:, :3, 3] = out_t  # [B, 3]
         pose[:, 3, 3] = 1.
         return pose
 
-    def svd_orthogonalize(self, m):
-        """Convert 9D representation to SO(3) using SVD orthogonalization.
+    # =========================================================================
+    # --- Forward Pass ---
+    # =========================================================================
+    def forward(self, feat, patch_h, patch_w):
+        BN, hw, c = feat.shape
 
-        Args:
-          m: [BATCH, 3, 3] 3x3 matrices.
+        # 1. Feature Processing (ResConv Blocks)
+        for i in range(2):
+            feat = self.res_conv[i](feat)
 
-        Returns:
-          [BATCH, 3, 3] SO(3) rotation matrices.
-        """
-        if m.dim() < 3:
-            m = m.reshape((-1, 3, 3))
-        m_transpose = torch.transpose(torch.nn.functional.normalize(m, p=2, dim=-1), dim0=-1, dim1=-2)
-        u, s, v = torch.svd(m_transpose)
-        det = torch.det(torch.matmul(v, u.transpose(-2, -1)))
-        # Check orientation reflection.
-        r = torch.matmul(
-            torch.cat([v[:, :, :-1], v[:, :, -1:] * det.view(-1, 1, 1)], dim=2),
-            u.transpose(-2, -1)
-        )
-        return r
+        # 2. Global Pooling (Reshape [B, hw, c] -> [B, c, h, w] -> [B, c])
+        # Reshape to NCHW format: [BN, hw, c] -> [BN, c, hw] -> [BN, c, H, W]
+        feat_pooled = feat.permute(0, 2, 1).reshape(BN, c, patch_h, patch_w).contiguous()
+        feat_pooled = self.avgpool(feat_pooled)
+        feat_pooled = feat_pooled.view(feat_pooled.size(0), -1)  # [B, D]
+
+        # 3. Shared MLPs
+        feat_head = self.more_mlps(feat_pooled)  # [B, D_]
+
+        # 使用 autocast 保持 float 精度进行预测 (与原始代码保持一致)
+        with torch.amp.autocast(device_type='cuda', enabled=False):
+            # --- V3 Predictions ---
+            # R: 6D Rotation -> 3x3 Matrix
+            out_r_6d = self.fc_rot_6d(feat_head.float())  # [B, 6]
+            out_r_mat = self._6d_to_matrix(out_r_6d)  # [B, 3, 3]
+
+            # T: Standard 3D Translation
+            out_t = self.fc_t(feat_head.float())  # [B, 3]
+
+            # Assemble the final pose (R, T)
+            pose = self.convert_pose_to_4x4(BN, out_r_mat, out_t, feat.device)
+
+        # Return the 4x4 pose matrix containing the predicted Rotation and full Translation (T).
+        return pose
