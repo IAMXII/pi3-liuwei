@@ -1,4 +1,4 @@
-_target_: training.pi3_module.Pi3LightningModule
+_target_: training.utils.pi3_module.Pi3LightningModule
 
 stage1_epochs: 80
 stage2_epochs: 80
