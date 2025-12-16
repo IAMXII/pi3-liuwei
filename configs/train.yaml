@@ -4,6 +4,7 @@ defaults:
   - model: pi3
   - trainer: default
   - paths: default
+  - optional train: null
 seed: 42
 
 #dataset:
