@@ -337,18 +337,44 @@ def compute_losses(
     # ==========================================================
     #  RGB + LPIPS
     # ==========================================================
-    losses['rgb_loss'] = LAMBDA_RGB * F.l1_loss(render_rgb, gt['img'])
+    # ==========================================================
+    #  RGB + LPIPS (opacity-aware, dynamic-aware)
+    # ==========================================================
+    with torch.no_grad():
+        dyn_alpha = torch.clamp(
+            render_alpha * s_dyn.mean(dim=1, keepdim=True),
+            0.0, 1.0
+        )
+        pixel_conf = 1.0 - dyn_alpha  # explained-only confidence
+
+    # --- RGB ---
+    rgb_l1 = torch.abs(render_rgb - gt['img'])
+
+    losses['rgb_loss'] = LAMBDA_RGB * (
+            pixel_conf.unsqueeze(-1) * rgb_l1
+    ).sum() / (pixel_conf.sum() * 3.0 + 1e-6)
+
+    # --- LPIPS ---
+    pixel_conf_lpips = (
+        pixel_conf
+        .view(-1, 1, height, width)
+        .expand(-1, 3, -1, -1)
+    )
 
     render_norm = (
-        render_rgb.permute(0, 1, 4, 2, 3)
-        .reshape(-1, 3, height, width) * 2 - 1
+            render_rgb.permute(0, 1, 4, 2, 3)
+            .reshape(-1, 3, height, width) * 2 - 1
     )
     gt_norm = (
-        gt['img'].permute(0, 1, 4, 2, 3)
-        .reshape(-1, 3, height, width) * 2 - 1
+            gt['img'].permute(0, 1, 4, 2, 3)
+            .reshape(-1, 3, height, width) * 2 - 1
     )
 
-    lpips_val = lpips_loss_fn(render_norm, gt_norm)
+    lpips_val = lpips_loss_fn(
+        render_norm * pixel_conf_lpips,
+        gt_norm * pixel_conf_lpips
+    )
+
     losses['lpips_loss'] = LAMBDA_LPIPS * lpips_val.mean()
 
     # ==========================================================

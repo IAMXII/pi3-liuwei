@@ -11,7 +11,7 @@
 # ==============================
 
 # 你想使用的 GPU 数量
-NUM_GPUS=4
+NUM_GPUS=8
 
 # 数据路径与保存路径（根据你情况修改）
 DATA_PATH="/home/liuwei/mnt/instant_vggt_dataset/mask_train"
