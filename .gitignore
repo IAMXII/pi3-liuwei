@@ -18,7 +18,7 @@ ckpts
 /logs
 /outputs
 /utils/debug.py
-/configs/data/full.yaml
+/training/configs/data/full.yaml
 *_check/
 /utils/utils_ceph.py
 

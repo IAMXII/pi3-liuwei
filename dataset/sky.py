@@ -3,6 +3,7 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
+import numpy as np
 
 class SkyDataset(Dataset):
     """
@@ -36,13 +37,13 @@ class SkyDataset(Dataset):
             f for f in os.listdir(self.img_dir)
             if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff'))
         ])
-        self.gt_files = sorted([
-            f for f in os.listdir(self.gt_dir)
-            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff'))
-        ])
-
-        assert len(self.img_files) == len(self.gt_files), \
-            f"图片数量与标签数量不匹配: {len(self.img_files)} vs {len(self.gt_files)}"
+        # self.gt_files = sorted([
+        #     f for f in os.listdir(self.gt_dir)
+        #     if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff'))
+        # ])
+        #
+        # assert len(self.img_files) == len(self.gt_files), \
+        #     f"图片数量与标签数量不匹配: {len(self.img_files)} vs {len(self.gt_files)}"
 
         # 图像转换
         self.img_transform = transforms.Compose([
@@ -64,15 +65,16 @@ class SkyDataset(Dataset):
     def __getitem__(self, idx):
         # 读取图像与标签
         img_path = os.path.join(self.img_dir, self.img_files[idx])
-        gt_path = os.path.join(self.gt_dir, self.gt_files[idx])
+        # gt_path = os.path.join(self.gt_dir, self.gt_files[idx])
 
         img = Image.open(img_path).convert("RGB")
-        gt = Image.open(gt_path).convert("L")
+        # gt = Image.open(gt_path).convert("L")
 
         # 应用transform（统一尺寸）
         img = self.img_transform(img)
-        mask = self.mask_transform(gt)
-
+        # mask = np.ones(self.img_size, dtype=np.uint8) * 255
+        # mask = self.mask_transform(gt)
+        mask = img
         # 二值化（天空=0，淹没=1）
         mask = (mask > 0.01).float()
 

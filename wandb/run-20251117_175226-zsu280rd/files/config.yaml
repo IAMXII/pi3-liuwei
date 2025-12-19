@@ -1,0 +1,94 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            vj0p513sqtwrpnc0n8nbi7zozrkq8xaq:
+                args:
+                    - --gpus
+                    - "4"
+                    - --data-path
+                    - /home/liuwei/mnt/instant_vggt_dataset/mask_train
+                    - --save-dir
+                    - ./ckpts
+                    - --amp
+                    - "True"
+                    - --save-interval
+                    - "1"
+                    - --pretrained-vggt
+                    - ./ckpts/pi3_sky_best_1.safetensors
+                    - --sky-epochs
+                    - "60"
+                    - --train-sky
+                    - "True"
+                codePath: train_sky.py
+                codePathLocal: train_sky.py
+                cpu_count: 24
+                cpu_count_logical: 32
+                cudaVersion: "12.9"
+                disk:
+                    /:
+                        total: "1392207233024"
+                        used: "235792199680"
+                email: 1923354735@qq.com
+                executable: /home/liuwei/anaconda3/envs/pi3-liuwei/bin/python3
+                git:
+                    commit: 6e719d04405a32d3d24318e1a68104809e20d8bf
+                    remote: git@github.com:IAMXII/pi3-liuwei.git
+                gpu: NVIDIA GeForce RTX 4090
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      cudaCores: 16384
+                      memoryTotal: "25757220864"
+                      name: NVIDIA GeForce RTX 4090
+                      uuid: GPU-22ccdb56-f51e-016e-6bb0-bfadbad80572
+                host: liuwei
+                memory:
+                    total: "67194339328"
+                os: Linux-6.14.0-28-generic-x86_64-with-glibc2.39
+                program: /home/liuwei/mnt/vggt/pi3-liuwei/train_sky.py
+                python: CPython 3.10.19
+                root: /home/liuwei/mnt/vggt/pi3-liuwei
+                startedAt: "2025-11-17T09:52:26.578878Z"
+                writerId: vj0p513sqtwrpnc0n8nbi7zozrkq8xaq
+        m: []
+        python_version: 3.10.19
+        t:
+            "1":
+                - 1
+                - 41
+                - 49
+            "2":
+                - 1
+                - 41
+                - 49
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.10.19
+            "5": 0.23.0
+            "12": 0.23.0
+            "13": linux-x86_64
+amp:
+    value: true
+data_path:
+    value: /home/liuwei/mnt/instant_vggt_dataset/mask_train
+freeze_encoder:
+    value: false
+gpus:
+    value: 4
+interval:
+    value: 1
+num_workers:
+    value: 4
+pretrained_vggt:
+    value: ./ckpts/pi3_sky_best_1.safetensors
+save_dir:
+    value: ./ckpts
+save_interval:
+    value: 1
+sky_epochs:
+    value: 60
+train_sky:
+    value: true

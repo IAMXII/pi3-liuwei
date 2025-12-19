@@ -4,7 +4,7 @@ from lightning import Trainer
 from hydra.utils import instantiate
 from lightning.pytorch import seed_everything
 
-@hydra.main(config_path="../configs", config_name="train", version_base=None)
+@hydra.main(config_path="configs", config_name="train", version_base=1.3)
 def main(cfg: DictConfig):
 
     seed_everything(cfg.seed, workers=True)
