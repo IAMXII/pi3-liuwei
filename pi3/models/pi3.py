@@ -479,7 +479,7 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         # Gaussian prediction
         # ----------------------
         ret = self.gaussian_head(
-            [gaussian_hidden[:, self.patch_start_idx:]]
+            gaussian_hidden[:, self.patch_start_idx:]
         )
 
         center = ret["center"]  # [B, G, 3]
