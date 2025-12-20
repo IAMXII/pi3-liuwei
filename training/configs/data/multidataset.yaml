@@ -1,9 +1,26 @@
 _target_: training.data.datamodule.WorldMirrorDataModule
+# max_images_per_gpu: 24
+# min_num_of_views: 2
+# num_workers: 4
+# pin_memory: True
+# aspect_ratios: [0.5, 2.0]
+# num_pixels_range: [100000, 250000]
+# train_datasets: null
+# validation_datasets: null
 max_images_per_gpu: 24
 min_num_of_views: 2
 num_workers: 4
-pin_memory: True
+num_workers_val: 2
+pin_memory: true
+transform: "ImageAugmentation(apply_aug=True, color_jitter={'brightness': 0.5, 'contrast': 0.5, 'saturation': 0.5, 'hue': 0.1, 'p': 0.9}, gray_scale=True, gau_blur=False)"
 aspect_ratios: [0.5, 2.0]
 num_pixels_range: [100000, 250000]
-train_datasets: null
-validation_datasets: null
+train_datasets:
+  - 400 @ HyperSim_Multi(split='train', num_views=${data.max_images_per_gpu}, aug_crop=0.77, transform=${data.transform}, ROOT='${paths.hypersim_dir}')
+validation_datasets:
+  - HyperSim_Eval(
+    split='test',
+    num_views=${data.max_images_per_gpu}
+    ROOT='${paths.hypersim_dir}',
+    resolution=(518, 378)
+    )
