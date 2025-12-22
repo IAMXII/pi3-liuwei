@@ -7,7 +7,7 @@ _target_: training.data.datamodule.WorldMirrorDataModule
 # num_pixels_range: [100000, 250000]
 # train_datasets: null
 # validation_datasets: null
-max_images_per_gpu: 24
+max_images_per_gpu: 8
 min_num_of_views: 2
 num_workers: 4
 num_workers_val: 2

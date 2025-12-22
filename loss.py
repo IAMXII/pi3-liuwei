@@ -313,7 +313,7 @@ def compute_losses(
     scales_g  = gauss['scale']
     colors    = gauss['color']
     opacities = gauss['opacity']
-
+    opacities = opacities.squeeze(-1)   # [B, N]
     s_fg  = gauss['s_fg']
     s_sky = gauss['s_sky']
     s_dyn = gauss['s_dyn']
