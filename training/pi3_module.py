@@ -173,11 +173,24 @@ from loss import compute_losses, compute_loss_sky
 from training.utils.misc import compose_batches_from_list
 
 
+import os
+import torch
+from torch.optim import AdamW
+from torch.optim.lr_scheduler import OneCycleLR
+from pytorch_lightning import LightningModule
+
+# 你已有的函数
+# from pi3.models.pi3 import Pi3
+# from pi3.losses import compute_losses
+# from pi3.utils import compose_batches_from_list
+
+
 class Pi3LightningModule(LightningModule):
 
     def __init__(
         self,
-        stage0_epochs=10,          # ★ 新增：pose warmup
+        current_stage: int = 0,     # ★ 新增：显式指定训练阶段 (0 / 1 / 2)
+        stage0_epochs=10,
         stage1_epochs=80,
         stage2_epochs=80,
         iters_per_epoch=800,
@@ -190,24 +203,28 @@ class Pi3LightningModule(LightningModule):
         freeze_encoder=True,
     ):
         super().__init__()
+
+        assert current_stage in [0, 1, 2], \
+            f"current_stage must be 0, 1 or 2, got {current_stage}"
+
         from pi3.models.pi3 import Pi3
         self.model = Pi3()
 
-        # -------- stage config --------
+        # -------------------------
+        # Stage config
+        # -------------------------
+        self.current_stage = current_stage
         self.stage0_epochs = stage0_epochs
         self.stage1_epochs = stage1_epochs
         self.stage2_epochs = stage2_epochs
-        self.total_epochs = stage0_epochs + stage1_epochs + stage2_epochs
 
         self.iters_per_epoch = iters_per_epoch
-        self.train_sky = train_sky
         self.grad_clip = grad_clip
+        self.train_sky = train_sky
 
         self.lr_encoder = lr_encoder
         self.lr_rest = lr_rest
         self.lr_conf = lr_conf
-
-        self.current_stage = 0
 
         self.save_hyperparameters()
 
@@ -222,24 +239,28 @@ class Pi3LightningModule(LightningModule):
         )
 
     # ------------------------------------------------------------------
-    # Load pretrained + param grouping
+    # Load pretrained + parameter grouping
     # ------------------------------------------------------------------
-    def prepare_model_for_training(self, model, pretrained_vggt_checkpoint, freeze_encoder):
-
+    def prepare_model_for_training(
+        self,
+        model,
+        pretrained_vggt_checkpoint,
+        freeze_encoder,
+    ):
         if pretrained_vggt_checkpoint and os.path.exists(pretrained_vggt_checkpoint):
             ckpt = torch.load(pretrained_vggt_checkpoint, map_location="cpu")
             model_state = model.state_dict()
             load_state = {k: v for k, v in ckpt.items() if k in model_state}
             model_state.update(load_state)
             model.load_state_dict(model_state)
-            print(f"Loaded pretrained from {pretrained_vggt_checkpoint}")
+            print(f"[Pi3] Loaded pretrained weights from {pretrained_vggt_checkpoint}")
 
         encoder_params, rest_params, conf_params = [], [], []
 
         for name, p in model.named_parameters():
             if "encoder" in name:
                 encoder_params.append(p)
-                p.requires_grad = False  # 初始全部冻结
+                p.requires_grad = not freeze_encoder
             elif "conf" in name or "confidence" in name:
                 conf_params.append(p)
             else:
@@ -248,19 +269,9 @@ class Pi3LightningModule(LightningModule):
         return encoder_params, rest_params, conf_params
 
     # ------------------------------------------------------------------
-    # Stage switching
+    # Training start hook (freeze / unfreeze encoder)
     # ------------------------------------------------------------------
-    def on_train_epoch_start(self):
-        e = self.current_epoch
-
-        if e < self.stage0_epochs:
-            self.current_stage = 0
-        elif e < self.stage0_epochs + self.stage1_epochs:
-            self.current_stage = 1
-        else:
-            self.current_stage = 2
-
-        # -------- freeze / unfreeze encoder --------
+    def on_train_start(self):
         if self.current_stage < 2:
             for p in self.encoder_params:
                 p.requires_grad = False
@@ -271,24 +282,44 @@ class Pi3LightningModule(LightningModule):
         self.log("train_stage", float(self.current_stage), prog_bar=True)
 
     # ------------------------------------------------------------------
-    # Optimizer
+    # Optimizer & scheduler
     # ------------------------------------------------------------------
     def configure_optimizers(self):
 
         param_groups = []
 
         if len(self.encoder_params) > 0:
-            param_groups.append({"params": self.encoder_params, "lr": self.lr_encoder})
+            param_groups.append({
+                "params": self.encoder_params,
+                "lr": self.lr_encoder
+            })
 
         if len(self.rest_params) > 0:
-            param_groups.append({"params": self.rest_params, "lr": self.lr_rest})
+            param_groups.append({
+                "params": self.rest_params,
+                "lr": self.lr_rest
+            })
 
         if len(self.conf_params) > 0:
-            param_groups.append({"params": self.conf_params, "lr": self.lr_conf})
+            param_groups.append({
+                "params": self.conf_params,
+                "lr": self.lr_conf
+            })
 
-        optimizer = torch.optim.AdamW(param_groups, weight_decay=1e-2)
+        optimizer = AdamW(
+            param_groups,
+            weight_decay=1e-2
+        )
 
-        total_steps = self.total_epochs * self.iters_per_epoch
+        # 根据 stage 决定训练总步数
+        if self.current_stage == 0:
+            total_epochs = self.stage0_epochs
+        elif self.current_stage == 1:
+            total_epochs = self.stage1_epochs
+        else:
+            total_epochs = self.stage2_epochs
+
+        total_steps = total_epochs * self.iters_per_epoch
 
         scheduler = OneCycleLR(
             optimizer,
@@ -302,45 +333,52 @@ class Pi3LightningModule(LightningModule):
 
         return {
             "optimizer": optimizer,
-            "lr_scheduler": {"scheduler": scheduler, "interval": "step"},
+            "lr_scheduler": {
+                "scheduler": scheduler,
+                "interval": "step",
+            },
         }
 
     # ------------------------------------------------------------------
-    # Training step (核心)
+    # Training step
     # ------------------------------------------------------------------
     def training_step(self, batch, batch_idx):
 
-        batched_inputs = compose_batches_from_list(batch, device=self.device)
+        batched_inputs = compose_batches_from_list(
+            batch,
+            device=self.device
+        )
+
         res = self.model(batched_inputs)
 
-        # ========== Stage 0: pose warmup ==========
+        # -------- Stage 0: pose warmup --------
         if self.current_stage == 0:
             losses = compute_losses(
                 res,
                 batched_inputs,
                 self.device,
-                pose_only=True,      # ★ 只训 pose
-                pose_weight=1.0
+                pose_only=True,
+                pose_weight=1.0,
             )
 
-        # ========== Stage 1: pose + gaussian ==========
+        # -------- Stage 1: pose + gaussian --------
         elif self.current_stage == 1:
             losses = compute_losses(
                 res,
                 batched_inputs,
                 self.device,
                 pose_only=False,
-                pose_weight=1.0
+                pose_weight=1.0,
             )
 
-        # ========== Stage 2: full finetune ==========
+        # -------- Stage 2: full finetune --------
         else:
             losses = compute_losses(
                 res,
                 batched_inputs,
                 self.device,
                 pose_only=False,
-                pose_weight=0.3     # ★ 放松 pose
+                pose_weight=0.3,
             )
 
         loss = losses["total_loss"]
@@ -348,7 +386,7 @@ class Pi3LightningModule(LightningModule):
         self.log_dict(
             {f"loss/{k}": v for k, v in losses.items()},
             prog_bar=True,
-            on_step=True
+            on_step=True,
         )
 
         return loss
@@ -356,15 +394,12 @@ class Pi3LightningModule(LightningModule):
     # ------------------------------------------------------------------
     # Gradient clipping
     # ------------------------------------------------------------------
-    # def configure_gradient_clipping(self, optimizer, optimizer_idx, gradient_clip_val=None):
-    #     torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
     def configure_gradient_clipping(
         self,
         optimizer,
         gradient_clip_val: float,
         gradient_clip_algorithm: str = "norm",
     ):
-        # 示例：使用 Lightning 的默认裁剪
         self.clip_gradients(
             optimizer,
             gradient_clip_val=gradient_clip_val,
