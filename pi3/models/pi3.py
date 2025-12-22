@@ -510,7 +510,7 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         # Global explicit Gaussian selection (foreground only)
         # ============================================================
         # score = opacity * conf * s_fg
-        score = (opacity * conf * s_fg).squeeze(-1)  # [B, G]
+        score = (opacity * s_fg).squeeze(-1)  # [B, G]
 
         k = score.shape[1] // 2
         _, topk_idx = torch.topk(score, k=k, dim=1, largest=True)

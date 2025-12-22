@@ -34,7 +34,10 @@ LAMBDA_CAM = 0.1
 LAMBDA_TRANS = 100.0
 LAMBDA_DEPTH = 1.0
 LAMBDA_RGB = 1
-
+LAMBDA_ROT = 1
+LAMBDA_DIR = 10
+LAMBDA_TRANS = 100
+LAMBDA_SCALE = 10
 
 def scale_invariant_depth_loss_batch(pred_depth, gt_depth, mask=None, eps=1e-6):
     """

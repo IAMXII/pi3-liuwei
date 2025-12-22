@@ -356,5 +356,17 @@ class Pi3LightningModule(LightningModule):
     # ------------------------------------------------------------------
     # Gradient clipping
     # ------------------------------------------------------------------
-    def configure_gradient_clipping(self, optimizer, optimizer_idx, gradient_clip_val=None):
-        torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
+    # def configure_gradient_clipping(self, optimizer, optimizer_idx, gradient_clip_val=None):
+    #     torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
+    def configure_gradient_clipping(
+        self,
+        optimizer,
+        gradient_clip_val: float,
+        gradient_clip_algorithm: str = "norm",
+    ):
+        # 示例：使用 Lightning 的默认裁剪
+        self.clip_gradients(
+            optimizer,
+            gradient_clip_val=gradient_clip_val,
+            gradient_clip_algorithm=gradient_clip_algorithm,
+        )
