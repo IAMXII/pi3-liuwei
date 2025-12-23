@@ -229,20 +229,106 @@ class Pi3LightningModule(LightningModule):
     # ------------------------------------------------------------------
     # Load pretrained + parameter grouping
     # ------------------------------------------------------------------
+    # def prepare_model_for_training(
+    #     self,
+    #     model,
+    #     pretrained_vggt_checkpoint,
+    #     freeze_encoder,
+    # ):
+    #     if pretrained_vggt_checkpoint and os.path.exists(pretrained_vggt_checkpoint):
+    #         ckpt = torch.load(pretrained_vggt_checkpoint, map_location="cpu")
+    #         model_state = model.state_dict()
+    #         keys_to_remove = []
+    #         for k in model_state.keys():
+    #             if "fc_rot" in k:  # 旧 9D rotation head
+    #                 keys_to_remove.append(k)
+
+    #         for k in keys_to_remove:
+    #             print(f"Removing old rotation weight: {k}")
+    #             del model_state[k]
+    #         load_state = {k: v for k, v in ckpt.items() if k in model_state}
+    #         model_state.update(load_state)
+    #         model.load_state_dict(model_state)
+    #         print(f"[Pi3] Loaded pretrained weights from {pretrained_vggt_checkpoint}")
+
+    #     encoder_params, rest_params, conf_params = [], [], []
+
+    #     for name, p in model.named_parameters():
+    #         if "encoder" in name:
+    #             encoder_params.append(p)
+    #             p.requires_grad = not freeze_encoder
+    #         elif "conf" in name or "confidence" in name:
+    #             conf_params.append(p)
+    #         else:
+    #             rest_params.append(p)
+
+    #     return encoder_params, rest_params, conf_params
     def prepare_model_for_training(
         self,
         model,
         pretrained_vggt_checkpoint,
         freeze_encoder,
     ):
-        if pretrained_vggt_checkpoint and os.path.exists(pretrained_vggt_checkpoint):
-            ckpt = torch.load(pretrained_vggt_checkpoint, map_location="cpu")
-            model_state = model.state_dict()
-            load_state = {k: v for k, v in ckpt.items() if k in model_state}
-            model_state.update(load_state)
-            model.load_state_dict(model_state)
-            print(f"[Pi3] Loaded pretrained weights from {pretrained_vggt_checkpoint}")
+        """
+        Load pretrained weights safely and robustly.
+        - Supports both .pt/.pth and .safetensors
+        - Drops old 9D rotation head (fc_rot)
+        - Keeps backbone / MLP / translation head
+        """
 
+        if pretrained_vggt_checkpoint and os.path.exists(pretrained_vggt_checkpoint):
+            print(f"[Pi3] Loading pretrained weights from {pretrained_vggt_checkpoint}")
+
+            # ------------------------------------------------------------
+            # 1. Load checkpoint (safe)
+            # ------------------------------------------------------------
+            if pretrained_vggt_checkpoint.endswith(".safetensors"):
+                from safetensors.torch import load_file
+                ckpt_state = load_file(pretrained_vggt_checkpoint, device="cpu")
+            else:
+                # Future-proof & safe
+                ckpt = torch.load(
+                    pretrained_vggt_checkpoint,
+                    map_location="cpu",
+                    weights_only=True,
+                )
+                # 兼容 {"model": state_dict} / 直接 state_dict
+                ckpt_state = ckpt.get("model", ckpt)
+
+            model_state = model.state_dict()
+
+            # ------------------------------------------------------------
+            # 2. Drop old rotation head weights (9D -> 6D)
+            # ------------------------------------------------------------
+            filtered_ckpt = {}
+            for k, v in ckpt_state.items():
+                # 明确丢弃旧的 9D rotation head
+                if "fc_rot" in k and "fc_rot_6d" not in k:
+                    print(f"[Pi3] Skip old rotation weight: {k}")
+                    continue
+                # 只加载当前模型中存在的 key
+                if k in model_state and v.shape == model_state[k].shape:
+                    filtered_ckpt[k] = v
+
+            # ------------------------------------------------------------
+            # 3. Load with strict=False (expected missing fc_rot_6d)
+            # ------------------------------------------------------------
+            missing, unexpected = model.load_state_dict(
+                filtered_ckpt,
+                strict=False
+            )
+
+            print("[Pi3] Pretrained loading summary:")
+            print("  Missing keys:")
+            for k in missing:
+                print("   -", k)
+            print("  Unexpected keys:")
+            for k in unexpected:
+                print("   -", k)
+
+        # ------------------------------------------------------------
+        # 4. Parameter groups (unchanged logic)
+        # ------------------------------------------------------------
         encoder_params, rest_params, conf_params = [], [], []
 
         for name, p in model.named_parameters():
