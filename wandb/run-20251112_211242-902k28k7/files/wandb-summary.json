@@ -1,1 +1,0 @@
-{"_timestamp":1.7629536455204275e+09,"_step":89,"epoch":5,"_runtime":505,"train/loss_sky":0.0007516412879340351,"step":3950,"val/loss":0.06859055161476135,"val/iou":0.8547350764274597,"_wandb":{"runtime":505}}

@@ -169,20 +169,8 @@ import torch
 from torch.optim.lr_scheduler import OneCycleLR
 from lightning import LightningModule
 from loss import compute_losses, compute_loss_sky
-
-from training.utils.misc import compose_batches_from_list
-
-
-import os
-import torch
 from torch.optim import AdamW
-from torch.optim.lr_scheduler import OneCycleLR
-from pytorch_lightning import LightningModule
-
-# 你已有的函数
-# from pi3.models.pi3 import Pi3
-# from pi3.losses import compute_losses
-# from pi3.utils import compose_batches_from_list
+from training.utils.misc import compose_batches_from_list
 
 
 class Pi3LightningModule(LightningModule):

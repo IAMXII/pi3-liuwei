@@ -255,7 +255,7 @@ def compute_losses(
 
     # --- translation direction ---
     dir_loss = torch.norm(t_pred_dir - t_gt_dir, dim=-1).mean()
-    losses['pose_dir_loss'] = LAMBDA_DIR * dir_loss * pose_weight
+    # losses['pose_dir_loss'] = LAMBDA_DIR * dir_loss * pose_weight
 
     # ----------------------------------------------------------
     #  π³-style O(N) global scale estimation
