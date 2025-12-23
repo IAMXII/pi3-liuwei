@@ -271,8 +271,10 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         self,
         pos_type='rope100',
         decoder_size='large',
+        stage=0,  # 0: 仅输出相机位姿; 1: 输出全部内容
     ):
         super().__init__()
+        self.stage = stage
 
         # ----------------------
         #        Encoder
@@ -294,25 +296,16 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
             raise NotImplementedError
 
         # ----------------------
-        #        Decoder
+        #        Decoder (Shared)
         # ----------------------
         enc_embed_dim = self.encoder.blocks[0].attn.qkv.in_features  # 1024
 
         if decoder_size == 'small':
-            dec_embed_dim = 384
-            dec_num_heads = 6
-            mlp_ratio = 4
-            dec_depth = 24
+            dec_embed_dim, dec_num_heads, mlp_ratio, dec_depth = 384, 6, 4, 24
         elif decoder_size == 'base':
-            dec_embed_dim = 768
-            dec_num_heads = 12
-            mlp_ratio = 4
-            dec_depth = 24
+            dec_embed_dim, dec_num_heads, mlp_ratio, dec_depth = 768, 12, 4, 24
         elif decoder_size == 'large':
-            dec_embed_dim = 1024
-            dec_num_heads = 16
-            mlp_ratio = 4
-            dec_depth = 36
+            dec_embed_dim, dec_num_heads, mlp_ratio, dec_depth = 1024, 16, 4, 36
         else:
             raise NotImplementedError
 
@@ -395,13 +388,9 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         self.register_buffer("image_mean", image_mean)
         self.register_buffer("image_std", image_std)
 
-    # ------------------------------------------------------------------
-    # Decode
-    # ------------------------------------------------------------------
     def decode(self, hidden, N, H, W):
         BN, hw, _ = hidden.shape
         B = BN // N
-
         final_output = []
 
         hidden = hidden.reshape(B * N, hw, -1)
@@ -421,11 +410,8 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         if self.patch_start_idx > 0:
             pos = pos + 1
             pos_special = torch.zeros(
-                B * N,
-                self.patch_start_idx,
-                2,
-                device=hidden.device,
-                dtype=pos.dtype
+                B * N, self.patch_start_idx, 2,
+                device=hidden.device, dtype=pos.dtype
             )
             pos = torch.cat([pos_special, pos], dim=1)
 
@@ -444,9 +430,6 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
 
         return torch.cat(final_output, dim=-1), pos.reshape(B * N, hw, -1)
 
-    # ------------------------------------------------------------------
-    # Forward
-    # ------------------------------------------------------------------
     def forward(self, views):
         imgs = views['img']
         imgs = (imgs - self.image_mean) / self.image_std
@@ -455,7 +438,7 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         patch_h, patch_w = H // self.patch_size, W // self.patch_size
 
         # ----------------------
-        # Encode
+        # 1. Shared Encoder & Decoder
         # ----------------------
         imgs = imgs.reshape(B * N, 3, H, W)
         hidden = self.encoder(imgs, is_training=True)
@@ -463,55 +446,42 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
         if isinstance(hidden, dict):
             hidden = hidden["x_norm_patchtokens"]
 
-        # ----------------------
-        # Shared transformer decode
-        # ----------------------
         hidden, pos = self.decode(hidden, N, H, W)
 
         # ----------------------
-        # Branch decoders
+        # 2. Camera Pose Branch (始终计算)
         # ----------------------
-        gaussian_hidden = self.gaussian_decoder(hidden, xpos=pos).float()
-        conf_hidden = self.conf_decoder(hidden, xpos=pos).float()
         camera_hidden = self.camera_decoder(hidden, xpos=pos).float()
-
-        # ----------------------
-        # Gaussian prediction
-        # ----------------------
-        ret = self.gaussian_head(
-            gaussian_hidden[:, self.patch_start_idx:]
-        )
-
-        center = ret["center"]  # [B, G, 3]
-        scale = ret["scale"]
-        quat = ret["quat"]
-        color = ret["color"]
-        opacity = ret["opacity"]
-
-        s_fg = ret["s_fg"]  # [B, G, 1]
-        s_sky = ret["s_sky"]
-        s_dyn = ret["s_dyn"]
-
-        # ----------------------
-        # Confidence prediction (per-pixel → per-Gaussian broadcast)
-        # ----------------------
-        conf = self.conf_head(
-            [conf_hidden[:, self.patch_start_idx:]], (H, W)
-        ).reshape(B, -1, 1)  # [B, G, 1]
-
-        # ----------------------
-        # Camera pose
-        # ----------------------
         camera_poses = self.camera_head(
             camera_hidden[:, self.patch_start_idx:], patch_h, patch_w
         ).reshape(B, N, 4, 4)
 
         # ============================================================
-        # Global explicit Gaussian selection (foreground only)
+        # 阶段 0 判断：仅返回位姿，跳过后续所有高斯相关分支
         # ============================================================
-        # score = opacity * conf * s_fg
-        score = (opacity * s_fg).squeeze(-1)  # [B, G]
+        if self.stage == 0:
+            return dict(camera_poses=camera_poses)
 
+        # ----------------------
+        # 3. Gaussian & Confidence Branches (仅在 stage > 0 时执行)
+        # ----------------------
+        gaussian_hidden = self.gaussian_decoder(hidden, xpos=pos).float()
+        conf_hidden = self.conf_decoder(hidden, xpos=pos).float()
+
+        # Gaussian prediction
+        ret = self.gaussian_head(
+            gaussian_hidden[:, self.patch_start_idx:]
+        )
+        center, scale, quat, color, opacity = ret["center"], ret["scale"], ret["quat"], ret["color"], ret["opacity"]
+        s_fg, s_sky, s_dyn = ret["s_fg"], ret["s_sky"], ret["s_dyn"]
+
+        # Confidence prediction
+        conf = self.conf_head(
+            [conf_hidden[:, self.patch_start_idx:]], (H, W)
+        ).reshape(B, -1, 1)
+
+        # Explicit Gaussian Selection
+        score = (opacity * s_fg).squeeze(-1)
         k = score.shape[1] // 2
         _, topk_idx = torch.topk(score, k=k, dim=1, largest=True)
 
@@ -527,20 +497,10 @@ class Pi3(nn.Module, PyTorchModelHubMixin):
             opacity=gather(opacity),
         )
 
-        # ----------------------
-        # Return
-        # ----------------------
         return dict(
             gaussians_all=dict(
-                center=center,
-                scale=scale,
-                quat=quat,
-                color=color,
-                opacity=opacity,
-                conf=conf,
-                s_fg=s_fg,
-                s_sky=s_sky,
-                s_dyn=s_dyn,
+                center=center, scale=scale, quat=quat, color=color,
+                opacity=opacity, conf=conf, s_fg=s_fg, s_sky=s_sky, s_dyn=s_dyn,
             ),
             gaussians_explicit=gaussians_explicit,
             camera_poses=camera_poses,

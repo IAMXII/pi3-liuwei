@@ -1,5 +1,5 @@
 _target_: training.pi3_module.Pi3LightningModule
-
+stage: 0
 stage1_epochs: 80
 stage2_epochs: 80
 iters_per_epoch: 800

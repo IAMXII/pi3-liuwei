@@ -465,6 +465,29 @@ class Pi3LightningModule(LightningModule):
 
         return loss
 
+    # 在 Pi3LightningModule 类内部
+    def validation_step(self, batch, batch_idx):
+        # 1. 整理输入并前向传播
+        batched_inputs = compose_batches_from_list(batch, device=self.device)
+        res = self.model(batched_inputs)
+
+        # 2. 计算损失 (注意：这里调用的 compute_losses 内部应该返回一个包含 "total_loss" 键的字典)
+        losses = compute_losses(
+            res,
+            batched_inputs,
+            self.device,
+            pose_only=(self.current_stage == 0),
+            pose_weight=1.0
+        )
+
+        # 3. 关键点：手动记录日志
+        # 这里我们将字典里的 "total_loss" 包装成 "val/total_loss"
+        self.log("val/total_loss", losses["total_loss"], prog_bar=True, on_epoch=True, sync_dist=True)
+
+        # 你也可以记录其他指标
+        self.log("val/pose_loss", losses["pose_loss"], on_epoch=True)
+
+        return losses["total_loss"]
     # ------------------------------------------------------------------
     # Gradient clipping
     # ------------------------------------------------------------------
