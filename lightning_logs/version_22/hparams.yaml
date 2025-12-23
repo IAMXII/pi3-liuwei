@@ -1,0 +1,12 @@
+current_stage: 0
+stage0_epochs: 10
+stage1_epochs: 80
+stage2_epochs: 80
+iters_per_epoch: 800
+lr_encoder: 5.0e-06
+lr_rest: 5.0e-05
+lr_conf: 5.0e-05
+grad_clip: 1.0
+train_sky: false
+pretrained_vggt_checkpoint: ./ckpts/model.safetensors
+freeze_encoder: true
